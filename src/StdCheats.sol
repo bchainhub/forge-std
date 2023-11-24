@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 pragma experimental ABIEncoderV2;
 
@@ -8,7 +8,7 @@ import {console2} from "./console2.sol";
 import {Vm} from "./Vm.sol";
 
 abstract contract StdCheatsSafe {
-    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
 
     uint256 private constant UINT256_MAX =
         115792089237316195423570985008687907853269984665640564039457584007913129639935;
@@ -218,11 +218,11 @@ abstract contract StdCheatsSafe {
         bytes memory returnData;
 
         // 4-byte selector for `isBlacklisted(address)`, used by USDC.
-        (success, returnData) = token.staticcall(abi.encodeWithSelector(0xfe575a87, addr));
+        (success, returnData) = token.staticcall(abi.encodeWithSelector(0x51eb226b, addr));
         vm.assume(!success || abi.decode(returnData, (bool)) == false);
 
         // 4-byte selector for `isBlackListed(address)`, used by USDT.
-        (success, returnData) = token.staticcall(abi.encodeWithSelector(0xe47d6060, addr));
+        (success, returnData) = token.staticcall(abi.encodeWithSelector(0x9171ca36, addr));
         vm.assume(!success || abi.decode(returnData, (bool)) == false);
     }
 
@@ -324,28 +324,13 @@ abstract contract StdCheatsSafe {
 
         // These should be present on all EVM-compatible chains.
         vm.assume(addr < address(0x1) || addr > address(0x9));
-
-        // forgefmt: disable-start
-        if (chainId == 10 || chainId == 420) {
-            // https://github.com/ethereum-optimism/optimism/blob/eaa371a0184b56b7ca6d9eb9cb0a2b78b2ccd864/op-bindings/predeploys/addresses.go#L6-L21
-            vm.assume(addr < address(0x4200000000000000000000000000000000000000) || addr > address(0x4200000000000000000000000000000000000800));
-        } else if (chainId == 42161 || chainId == 421613) {
-            // https://developer.arbitrum.io/useful-addresses#arbitrum-precompiles-l2-same-on-all-arb-chains
-            vm.assume(addr < address(0x0000000000000000000000000000000000000064) || addr > address(0x0000000000000000000000000000000000000068));
-        } else if (chainId == 43114 || chainId == 43113) {
-            // https://github.com/ava-labs/subnet-evm/blob/47c03fd007ecaa6de2c52ea081596e0a88401f58/precompile/params.go#L18-L59
-            vm.assume(addr < address(0x0100000000000000000000000000000000000000) || addr > address(0x01000000000000000000000000000000000000ff));
-            vm.assume(addr < address(0x0200000000000000000000000000000000000000) || addr > address(0x02000000000000000000000000000000000000FF));
-            vm.assume(addr < address(0x0300000000000000000000000000000000000000) || addr > address(0x03000000000000000000000000000000000000Ff));
-        }
-        // forgefmt: disable-end
     }
 
     function assumeNotForgeAddress(address addr) internal pure virtual {
         // vm, console, and Create2Deployer addresses
         vm.assume(
-            addr != address(vm) && addr != 0x000000000000000000636F6e736F6c652e6c6f67
-                && addr != 0x4e59b44847b379578588920cA78FbF26c0B4956C
+            addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
+                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
         );
     }
 
@@ -615,9 +600,9 @@ abstract contract StdCheatsSafe {
     // We use this complex approach of `_viewChainId` and `_pureChainId` to ensure there are no
     // compiler warnings when accessing chain ID in any solidity version supported by forge-std. We
     // can't simply access the chain ID in a normal view or pure function because the solc View Pure
-    // Checker changed `chainid` from pure to view in 0.8.0.
+    // Checker changed `chainid` from pure to view in 1.1.0.
     function _viewChainId() private view returns (uint256 chainId) {
-        // Assembly required since `block.chainid` was introduced in 0.8.0.
+        // Assembly required since `block.chainid` was introduced in 1.1.0.
         assembly {
             chainId := chainid()
         }
@@ -640,8 +625,8 @@ abstract contract StdCheats is StdCheatsSafe {
     using stdStorage for StdStorage;
 
     StdStorage private stdstore;
-    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
-    address private constant CONSOLE2_ADDRESS = 0x000000000000000000636F6e736F6c652e6c6f67;
+    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    address private constant CONSOLE2_ADDRESS = 0xcb82000000000000000000636f6e736f6c652e6c6f67;
 
     // Skip forward or rewind time by the specified number of seconds
     function skip(uint256 time) internal virtual {
@@ -727,36 +712,36 @@ abstract contract StdCheats is StdCheatsSafe {
 
     function deal(address token, address to, uint256 give, bool adjust) internal virtual {
         // get current balance
-        (, bytes memory balData) = token.staticcall(abi.encodeWithSelector(0x70a08231, to));
+        (, bytes memory balData) = token.staticcall(abi.encodeWithSelector(0x1d7976f3, to));
         uint256 prevBal = abi.decode(balData, (uint256));
 
         // update balance
-        stdstore.target(token).sig(0x70a08231).with_key(to).checked_write(give);
+        stdstore.target(token).sig(0x1d7976f3).with_key(to).checked_write(give);
 
         // update total supply
         if (adjust) {
-            (, bytes memory totSupData) = token.staticcall(abi.encodeWithSelector(0x18160ddd));
+            (, bytes memory totSupData) = token.staticcall(abi.encodeWithSelector(0x1f1881f8));
             uint256 totSup = abi.decode(totSupData, (uint256));
             if (give < prevBal) {
                 totSup -= (prevBal - give);
             } else {
                 totSup += (give - prevBal);
             }
-            stdstore.target(token).sig(0x18160ddd).checked_write(totSup);
+            stdstore.target(token).sig(0x1f1881f8).checked_write(totSup);
         }
     }
 
     function dealERC1155(address token, address to, uint256 id, uint256 give, bool adjust) internal virtual {
         // get current balance
-        (, bytes memory balData) = token.staticcall(abi.encodeWithSelector(0x00fdd58e, to, id));
+        (, bytes memory balData) = token.staticcall(abi.encodeWithSelector(0xc5524546, to, id));
         uint256 prevBal = abi.decode(balData, (uint256));
 
         // update balance
-        stdstore.target(token).sig(0x00fdd58e).with_key(to).with_key(id).checked_write(give);
+        stdstore.target(token).sig(0xc5524546).with_key(to).with_key(id).checked_write(give);
 
         // update total supply
         if (adjust) {
-            (, bytes memory totSupData) = token.staticcall(abi.encodeWithSelector(0xbd85b039, id));
+            (, bytes memory totSupData) = token.staticcall(abi.encodeWithSelector(0x93af8347, id));
             require(
                 totSupData.length != 0,
                 "StdCheats deal(address,address,uint,uint,bool): target contract is not ERC1155Supply."
@@ -767,30 +752,30 @@ abstract contract StdCheats is StdCheatsSafe {
             } else {
                 totSup += (give - prevBal);
             }
-            stdstore.target(token).sig(0xbd85b039).with_key(id).checked_write(totSup);
+            stdstore.target(token).sig(0x93af8347).with_key(id).checked_write(totSup);
         }
     }
 
     function dealERC721(address token, address to, uint256 id) internal virtual {
         // check if token id is already minted and the actual owner.
-        (bool successMinted, bytes memory ownerData) = token.staticcall(abi.encodeWithSelector(0x6352211e, id));
+        (bool successMinted, bytes memory ownerData) = token.staticcall(abi.encodeWithSelector(0x3753ff5b, id));
         require(successMinted, "StdCheats deal(address,address,uint,bool): id not minted.");
 
         // get owner current balance
         (, bytes memory fromBalData) =
-            token.staticcall(abi.encodeWithSelector(0x70a08231, abi.decode(ownerData, (address))));
+            token.staticcall(abi.encodeWithSelector(0x1d7976f3, abi.decode(ownerData, (address))));
         uint256 fromPrevBal = abi.decode(fromBalData, (uint256));
 
         // get new user current balance
-        (, bytes memory toBalData) = token.staticcall(abi.encodeWithSelector(0x70a08231, to));
+        (, bytes memory toBalData) = token.staticcall(abi.encodeWithSelector(0x1d7976f3, to));
         uint256 toPrevBal = abi.decode(toBalData, (uint256));
 
         // update balances
-        stdstore.target(token).sig(0x70a08231).with_key(abi.decode(ownerData, (address))).checked_write(--fromPrevBal);
-        stdstore.target(token).sig(0x70a08231).with_key(to).checked_write(++toPrevBal);
+        stdstore.target(token).sig(0x1d7976f3).with_key(abi.decode(ownerData, (address))).checked_write(--fromPrevBal);
+        stdstore.target(token).sig(0x1d7976f3).with_key(to).checked_write(++toPrevBal);
 
         // update owner
-        stdstore.target(token).sig(0x6352211e).with_key(id).checked_write(to);
+        stdstore.target(token).sig(0x3753ff5b).with_key(id).checked_write(to);
     }
 
     function deployCodeTo(string memory what, address where) internal virtual {

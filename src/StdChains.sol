@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 import {VmSafe} from "./Vm.sol";
 
@@ -32,7 +32,7 @@ import {VmSafe} from "./Vm.sol";
  * Summarizing the above, the prioritization hierarchy is `setChain` -> `foundry.toml` -> environment variable -> defaults.
  */
 abstract contract StdChains {
-    VmSafe private constant vm = VmSafe(address(uint160(uint256(keccak256("hevm cheat code")))));
+    VmSafe private constant vm = VmSafe(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
 
     bool private stdChainsInitialized;
 
@@ -191,46 +191,8 @@ abstract contract StdChains {
         stdChainsInitialized = true;
 
         // If adding an RPC here, make sure to test the default RPC URL in `testRpcs`
-        setChainWithDefaultRpcUrl("anvil", ChainData("Anvil", 31337, "http://127.0.0.1:8545"));
-        setChainWithDefaultRpcUrl(
-            "mainnet", ChainData("Mainnet", 1, "https://mainnet.infura.io/v3/b9794ad1ddf84dfb8c34d6bb5dca2001")
-        );
-        setChainWithDefaultRpcUrl(
-            "goerli", ChainData("Goerli", 5, "https://goerli.infura.io/v3/b9794ad1ddf84dfb8c34d6bb5dca2001")
-        );
-        setChainWithDefaultRpcUrl(
-            "sepolia", ChainData("Sepolia", 11155111, "https://sepolia.infura.io/v3/b9794ad1ddf84dfb8c34d6bb5dca2001")
-        );
-        setChainWithDefaultRpcUrl("optimism", ChainData("Optimism", 10, "https://mainnet.optimism.io"));
-        setChainWithDefaultRpcUrl("optimism_goerli", ChainData("Optimism Goerli", 420, "https://goerli.optimism.io"));
-        setChainWithDefaultRpcUrl("arbitrum_one", ChainData("Arbitrum One", 42161, "https://arb1.arbitrum.io/rpc"));
-        setChainWithDefaultRpcUrl(
-            "arbitrum_one_goerli", ChainData("Arbitrum One Goerli", 421613, "https://goerli-rollup.arbitrum.io/rpc")
-        );
-        setChainWithDefaultRpcUrl("arbitrum_nova", ChainData("Arbitrum Nova", 42170, "https://nova.arbitrum.io/rpc"));
-        setChainWithDefaultRpcUrl("polygon", ChainData("Polygon", 137, "https://polygon-rpc.com"));
-        setChainWithDefaultRpcUrl(
-            "polygon_mumbai", ChainData("Polygon Mumbai", 80001, "https://rpc-mumbai.maticvigil.com")
-        );
-        setChainWithDefaultRpcUrl("avalanche", ChainData("Avalanche", 43114, "https://api.avax.network/ext/bc/C/rpc"));
-        setChainWithDefaultRpcUrl(
-            "avalanche_fuji", ChainData("Avalanche Fuji", 43113, "https://api.avax-test.network/ext/bc/C/rpc")
-        );
-        setChainWithDefaultRpcUrl(
-            "bnb_smart_chain", ChainData("BNB Smart Chain", 56, "https://bsc-dataseed1.binance.org")
-        );
-        setChainWithDefaultRpcUrl(
-            "bnb_smart_chain_testnet",
-            ChainData("BNB Smart Chain Testnet", 97, "https://rpc.ankr.com/bsc_testnet_chapel")
-        );
-        setChainWithDefaultRpcUrl("gnosis_chain", ChainData("Gnosis Chain", 100, "https://rpc.gnosischain.com"));
-        setChainWithDefaultRpcUrl("moonbeam", ChainData("Moonbeam", 1284, "https://rpc.api.moonbeam.network"));
-        setChainWithDefaultRpcUrl(
-            "moonriver", ChainData("Moonriver", 1285, "https://rpc.api.moonriver.moonbeam.network")
-        );
-        setChainWithDefaultRpcUrl("moonbase", ChainData("Moonbase", 1287, "https://rpc.testnet.moonbeam.network"));
-        setChainWithDefaultRpcUrl("base_goerli", ChainData("Base Goerli", 84531, "https://goerli.base.org"));
-        setChainWithDefaultRpcUrl("base", ChainData("Base", 8453, "https://mainnet.base.org"));
+        setChainWithDefaultRpcUrl("mainnet", ChainData("Mainnet", 1, "https://xcbapi.coreblockchain.net/"));
+        setChainWithDefaultRpcUrl("devin", ChainData("Devin", 3, "https://xcbapi.corecoin.cc/"));
     }
 
     // set chain info, with priority to chainAlias' rpc url in foundry.toml

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 /// @notice This is a mock contract of the ERC20 standard for testing purposes only, it SHOULD NOT be used in production.
 /// @dev Forked from: https://github.com/transmissions11/solmate/blob/0384dbaaa4fcb5715738a9254a7c0a4cb62cf458/src/tokens/ERC20.sol
@@ -195,9 +195,9 @@ contract MockERC20 {
     // We use this complex approach of `_viewChainId` and `_pureChainId` to ensure there are no
     // compiler warnings when accessing chain ID in any solidity version supported by forge-std. We
     // can't simply access the chain ID in a normal view or pure function because the solc View Pure
-    // Checker changed `chainid` from pure to view in 0.8.0.
+    // Checker changed `chainid` from pure to view in 1.1.0.
     function _viewChainId() private view returns (uint256 chainId) {
-        // Assembly required since `block.chainid` was introduced in 0.8.0.
+        // Assembly required since `block.chainid` was introduced in 1.1.0.
         assembly {
             chainId := chainid()
         }

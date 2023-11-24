@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 pragma experimental ABIEncoderV2;
 
@@ -13,9 +13,9 @@ abstract contract StdUtils {
                                      CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    IMulticall3 private constant multicall = IMulticall3(0xcA11bde05977b3631167028862bE2a173976CA11);
-    VmSafe private constant vm = VmSafe(address(uint160(uint256(keccak256("hevm cheat code")))));
-    address private constant CONSOLE2_ADDRESS = 0x000000000000000000636F6e736F6c652e6c6f67;
+    IMulticall3 private constant multicall = IMulticall3(0xcb11ca11bde05977b3631167028862be2a173976ca11);
+    VmSafe private constant vm = VmSafe(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    address private constant CONSOLE2_ADDRESS = 0xcb82000000000000000000636f6e736f6c652e6c6f67;
     uint256 private constant INT256_MIN_ABS =
         57896044618658097711785492504343953926634992332820282019728792003956564819968;
     uint256 private constant SECP256K1_ORDER =
@@ -24,7 +24,7 @@ abstract contract StdUtils {
         115792089237316195423570985008687907853269984665640564039457584007913129639935;
 
     // Used by default when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
-    address private constant CREATE2_FACTORY = 0x4e59b44847b379578588920cA78FbF26c0B4956C;
+    address private constant CREATE2_FACTORY = 0xcb914e59b44847b379578588920ca78fbf26c0b4956c;
 
     /*//////////////////////////////////////////////////////////////////////////
                                  INTERNAL FUNCTIONS
@@ -163,8 +163,8 @@ abstract contract StdUtils {
         uint256 length = addresses.length;
         IMulticall3.Call[] memory calls = new IMulticall3.Call[](length);
         for (uint256 i = 0; i < length; ++i) {
-            // 0x70a08231 = bytes4("balanceOf(address)"))
-            calls[i] = IMulticall3.Call({target: token, callData: abi.encodeWithSelector(0x70a08231, (addresses[i]))});
+            // 0x1d7976f3 = bytes4("balanceOf(address)"))
+            calls[i] = IMulticall3.Call({target: token, callData: abi.encodeWithSelector(0x1d7976f3, (addresses[i]))});
         }
 
         // Make the aggregate call.
