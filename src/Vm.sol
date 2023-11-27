@@ -128,7 +128,7 @@ interface VmSafe {
     function load(address target, bytes32 slot) external view returns (bytes32 data);
 
     // Signs data
-    function sign(string) privateKey, bytes32 digest) external pure returns (bytes sig);
+    function sign(string privateKey, bytes32 digest) external pure returns (bytes sig);
 
     // -------- Record Storage --------
     // Records all storage reads and writes
