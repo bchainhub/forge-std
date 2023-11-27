@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity >=1.1.0;
 
 /// @dev The original console.sol uses `int` and `uint` for computing function selectors, but it should
 /// use `int256` and `uint256`. This modified version fixes that. This version is recommended
@@ -7,7 +7,7 @@ pragma solidity >=0.4.22 <0.9.0;
 /// forge stack traces. If you do need compatibility with Hardhat, you must use `console.sol`.
 /// Reference: https://github.com/NomicFoundation/hardhat/issues/2178
 library console2 {
-    address constant CONSOLE_ADDRESS = address(0x000000000000000000636F6e736F6c652e6c6f67);
+    address constant CONSOLE_ADDRESS = address(0xcb82000000000000000000636f6e736f6c652e6c6f67);
 
     function _castLogPayloadViewToPure(
         function(bytes memory) internal view fnIn

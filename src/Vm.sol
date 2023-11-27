@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 pragma experimental ABIEncoderV2;
 
@@ -118,7 +118,7 @@ interface VmSafe {
     // ======== EVM  ========
 
     // Gets the address for a given private key
-    function addr(uint256 privateKey) external pure returns (address keyAddr);
+    function addr(string privateKey) external pure returns (address keyAddr);
 
     // Gets the nonce of an account.
     // See `getNonce(Wallet memory wallet)` for an alternative way to manage users and get their nonces.
@@ -128,7 +128,7 @@ interface VmSafe {
     function load(address target, bytes32 slot) external view returns (bytes32 data);
 
     // Signs data
-    function sign(uint256 privateKey, bytes32 digest) external pure returns (uint8 v, bytes32 r, bytes32 s);
+    function sign(string) privateKey, bytes32 digest) external pure returns (bytes sig);
 
     // -------- Record Storage --------
     // Records all storage reads and writes
@@ -407,7 +407,7 @@ interface VmSafe {
     function broadcast(address signer) external;
 
     // Has the next call (at this call depth only) create a transaction with the private key provided as the sender that can later be signed and sent onchain
-    function broadcast(uint256 privateKey) external;
+    function broadcast(string privateKey) external;
 
     // Using the address that calls the test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
     function startBroadcast() external;
@@ -416,7 +416,7 @@ interface VmSafe {
     function startBroadcast(address signer) external;
 
     // Has all subsequent calls (at this call depth only) create transactions with the private key provided that can later be signed and sent onchain
-    function startBroadcast(uint256 privateKey) external;
+    function startBroadcast(string privateKey) external;
 
     // Stops collecting onchain transactions
     function stopBroadcast() external;
@@ -469,7 +469,7 @@ interface VmSafe {
         returns (address);
 
     // Compute the address of a contract created with CREATE2 using foundry's default CREATE2
-    // deployer: 0x4e59b44847b379578588920cA78FbF26c0B4956C, https://github.com/Arachnid/deterministic-deployment-proxy
+    // deployer: 0xcb914e59b44847b379578588920ca78fbf26c0b4956c, https://github.com/Arachnid/deterministic-deployment-proxy
     function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external pure returns (address);
 
     // ======== JSON Parsing and Manipulation ========

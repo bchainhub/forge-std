@@ -172,7 +172,7 @@ This is a wrapper over miscellaneous cheatcodes that need wrappers to be more de
 ```solidity
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^1.1.0;
 
 import "forge-std/Test.sol";
 

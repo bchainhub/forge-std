@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity >=1.1.0;
 
 import "../src/StdCheats.sol";
 import "../src/Test.sol";
@@ -342,7 +342,7 @@ contract StdCheatsTest is Test {
         }
         assertTrue(addr != address(0));
         assertTrue(addr < address(1) || addr > address(9));
-        assertTrue(addr != address(vm) || addr != 0x000000000000000000636F6e736F6c652e6c6f67);
+        assertTrue(addr != address(vm) || addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67);
     }
 
     function test_AssumePayable() external {
@@ -357,11 +357,11 @@ contract StdCheatsTest is Test {
 
         // Console address
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0x000000000000000000636F6e736F6c652e6c6f67);
+        stdCheatsMock.exposed_assumePayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
 
         // Create2Deployer
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0x4e59b44847b379578588920cA78FbF26c0B4956C);
+        stdCheatsMock.exposed_assumePayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
 
         // all should pass since these addresses are payable
 
@@ -383,10 +383,10 @@ contract StdCheatsTest is Test {
         stdCheatsMock.exposed_assumeNotPayable(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         // Console address
-        stdCheatsMock.exposed_assumeNotPayable(0x000000000000000000636F6e736F6c652e6c6f67);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(0x4e59b44847b379578588920cA78FbF26c0B4956C);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
 
         // all should revert since these addresses are payable
 
@@ -411,8 +411,8 @@ contract StdCheatsTest is Test {
     function testFuzz_AssumeNotForgeAddress(address addr) external {
         assumeNotForgeAddress(addr);
         assertTrue(
-            addr != address(vm) && addr != 0x000000000000000000636F6e736F6c652e6c6f67
-                && addr != 0x4e59b44847b379578588920cA78FbF26c0B4956C
+            addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
+                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
         );
     }
 

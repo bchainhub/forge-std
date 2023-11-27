@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.0 <0.9.0;
+pragma solidity >=1.1.0;
 
 pragma experimental ABIEncoderV2;
 
@@ -27,7 +27,7 @@ import {VmSafe} from "./Vm.sol";
 // ```
 
 library stdJson {
-    VmSafe private constant vm = VmSafe(address(uint160(uint256(keccak256("hevm cheat code")))));
+    VmSafe private constant vm = VmSafe(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
 
     function parseRaw(string memory json, string memory key) internal pure returns (bytes memory) {
         return vm.parseJson(json, key);

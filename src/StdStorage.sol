@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.6.2 <0.9.0;
+pragma solidity >=1.1.0;
 
 import {Vm} from "./Vm.sol";
 
@@ -17,7 +17,7 @@ library stdStorageSafe {
     event SlotFound(address who, bytes4 fsig, bytes32 keysHash, uint256 slot);
     event WARNING_UninitedSlot(address who, uint256 slot);
 
-    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
 
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return bytes4(keccak256(bytes(sigStr)));
@@ -232,7 +232,7 @@ library stdStorageSafe {
 }
 
 library stdStorage {
-    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
 
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return stdStorageSafe.sigs(sigStr);
