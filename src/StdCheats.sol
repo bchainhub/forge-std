@@ -194,7 +194,7 @@ abstract contract StdCheatsSafe {
 
     struct Account {
         address addr;
-        uint256 key;
+        string key;
     }
 
     enum AddressType {
