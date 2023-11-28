@@ -128,7 +128,7 @@ interface VmSafe {
     function load(address target, bytes32 slot) external view returns (bytes32 data);
 
     // Signs data
-    function sign(string privateKey, bytes32 digest) external pure returns (bytes sig);
+    function sign(string memory privateKey, bytes32 digest) external pure returns (bytes sig);
 
     // -------- Record Storage --------
     // Records all storage reads and writes
@@ -407,7 +407,7 @@ interface VmSafe {
     function broadcast(address signer) external;
 
     // Has the next call (at this call depth only) create a transaction with the private key provided as the sender that can later be signed and sent onchain
-    function broadcast(string privateKey) external;
+    function broadcast(string memory privateKey) external;
 
     // Using the address that calls the test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
     function startBroadcast() external;
@@ -416,7 +416,7 @@ interface VmSafe {
     function startBroadcast(address signer) external;
 
     // Has all subsequent calls (at this call depth only) create transactions with the private key provided that can later be signed and sent onchain
-    function startBroadcast(string privateKey) external;
+    function startBroadcast(string memory privateKey) external;
 
     // Stops collecting onchain transactions
     function stopBroadcast() external;
