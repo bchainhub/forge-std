@@ -90,11 +90,11 @@ contract StdCheatsTest is Test {
     }
 
     function test_MakeAddrSigning() public {
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         bytes32 hash = keccak256("some_message");
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, hash);
-        assertEq(ecrecover(hash, v, r, s), addr);
+        (bytes memory signature) = vm.sign(key, hash);
+        assertEq(ecrecover(hash, signature), addr);
     }
 
     function test_Deal() public {
