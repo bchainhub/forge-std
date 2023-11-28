@@ -101,7 +101,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testPermit() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEF";
         address owner = vm.addr(privateKey);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(
@@ -149,7 +149,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadNonce() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEF";
         address owner = vm.addr(privateKey);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(
@@ -167,7 +167,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadDeadline() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEF";
         address owner = vm.addr(privateKey);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(
@@ -186,7 +186,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitPastDeadline() public {
         uint256 oldTimestamp = block.timestamp;
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEF";
         address owner = vm.addr(privateKey);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(
@@ -205,7 +205,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitReplay() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEF";
         address owner = vm.addr(privateKey);
 
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(

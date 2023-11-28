@@ -77,7 +77,7 @@ interface VmSafe {
         address addr;
         uint256 publicKeyX;
         uint256 publicKeyY;
-        uint256 privateKey;
+        string privateKey;
     }
 
     struct FfiResult {
@@ -378,10 +378,10 @@ interface VmSafe {
     function createWallet(string calldata walletLabel) external returns (Wallet memory wallet);
 
     // Generates a wallet from the private key and returns the wallet
-    function createWallet(uint256 privateKey) external returns (Wallet memory wallet);
+    function createWallet(string memory privateKey) external returns (Wallet memory wallet);
 
     // Generates a wallet from the private key, labels the account with that name, and returns the wallet
-    function createWallet(uint256 privateKey, string calldata walletLabel) external returns (Wallet memory wallet);
+    function createWallet(string memory privateKey, string calldata walletLabel) external returns (Wallet memory wallet);
 
     // Gets the label for the specified address
     function getLabel(address account) external returns (string memory currentLabel);
@@ -424,16 +424,16 @@ interface VmSafe {
     // -------- Key Management --------
 
     // Derive a private key from a provided mnenomic string (or mnenomic file path) at the derivation path m/44'/60'/0'/0/{index}
-    function deriveKey(string calldata mnemonic, uint32 index) external pure returns (uint256 privateKey);
+    function deriveKey(string calldata mnemonic, uint32 index) external pure returns (string memory privateKey);
 
     // Derive a private key from a provided mnenomic string (or mnenomic file path) at {derivationPath}{index}
     function deriveKey(string calldata mnemonic, string calldata derivationPath, uint32 index)
         external
         pure
-        returns (uint256 privateKey);
+        returns (string memory privateKey);
 
     // Adds a private key to the local forge wallet and returns the address
-    function rememberKey(uint256 privateKey) external returns (address keyAddr);
+    function rememberKey(string memory privateKey) external returns (address keyAddr);
 
     // ======== Utilities ========
 
