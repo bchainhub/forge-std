@@ -375,7 +375,7 @@ interface VmSafe {
     // ======== User Management ========
 
     // Derives a private key from the name, labels the account with that name, and returns the wallet
-    function createWallet(string memory walletLabel) external returns (Wallet memory wallet);
+    function createWalletFromLabel(string memory walletLabel) external returns (Wallet memory wallet);
 
     // Generates a wallet from the private key and returns the wallet
     function createWallet(string memory privateKey) external returns (Wallet memory wallet);
