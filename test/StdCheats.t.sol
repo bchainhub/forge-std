@@ -79,7 +79,7 @@ contract StdCheatsTest is Test {
 
     function test_MakeAccountEquivalence() public {
         Account memory account = makeAccount("1337");
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         assertEq(account.addr, addr);
         assertEq(account.key, key);
     }
