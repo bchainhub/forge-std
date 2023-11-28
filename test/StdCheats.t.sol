@@ -79,7 +79,7 @@ contract StdCheatsTest is Test {
 
     function test_MakeAccountEquivalence() public {
         Account memory account = makeAccount("1337");
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         assertEq(account.addr, addr);
         assertEq(account.key, key);
     }
@@ -90,11 +90,11 @@ contract StdCheatsTest is Test {
     }
 
     function test_MakeAddrSigning() public {
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         bytes32 hash = keccak256("some_message");
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, hash);
-        assertEq(ecrecover(hash, v, r, s), addr);
+        (bytes memory signature) = vm.sign(key, hash);
+        assertEq(ecrecover(hash, signature), addr);
     }
 
     function test_Deal() public {
@@ -229,8 +229,8 @@ contract StdCheatsTest is Test {
         string memory mnemonic = "test test test test test test test test test test test junk";
 
         (address deployer, uint256 privateKey) = deriveRememberKey(mnemonic, 0);
-        assertEq(deployer, 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
-        assertEq(privateKey, 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80);
+        assertEq(deployer, address(0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266));
+        assertEq(privateKey, "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
     }
 
     function test_BytesToUint() public {

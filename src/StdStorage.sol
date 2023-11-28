@@ -124,7 +124,7 @@ library stdStorageSafe {
     }
 
     function with_key(StdStorage storage self, address who) internal returns (StdStorage storage) {
-        self._keys.push(bytes32(uint256(uint160(who))));
+        self._keys.push(bytes32(uint256(uint176(who))));
         return self;
     }
 
@@ -271,7 +271,7 @@ library stdStorage {
     }
 
     function checked_write(StdStorage storage self, address who) internal {
-        checked_write(self, bytes32(uint256(uint160(who))));
+        checked_write(self, bytes32(uint256(uint176(who))));
     }
 
     function checked_write(StdStorage storage self, uint256 amt) internal {

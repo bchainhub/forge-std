@@ -194,7 +194,7 @@ abstract contract StdCheatsSafe {
 
     struct Account {
         address addr;
-        uint256 key;
+        string key;
     }
 
     enum AddressType {
@@ -514,8 +514,9 @@ abstract contract StdCheatsSafe {
     }
 
     // creates a labeled address and the corresponding private key
-    function makeAddrAndKey(string memory name) internal virtual returns (address addr, uint256 privateKey) {
-        privateKey = uint256(keccak256(abi.encodePacked(name)));
+    function makeAddrAndKey(string memory name) internal virtual returns (address addr, string memory privateKey) {
+        // privateKey = uint256(keccak256(abi.encodePacked(name)));
+        privateKey = "1123";
         addr = vm.addr(privateKey);
         vm.label(addr, name);
     }
@@ -547,7 +548,7 @@ abstract contract StdCheatsSafe {
     function deriveRememberKey(string memory mnemonic, uint32 index)
         internal
         virtual
-        returns (address who, uint256 privateKey)
+        returns (address who, string memory privateKey)
     {
         privateKey = vm.deriveKey(mnemonic, index);
         who = vm.rememberKey(privateKey);

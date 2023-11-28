@@ -182,7 +182,7 @@ abstract contract StdUtils {
     //////////////////////////////////////////////////////////////////////////*/
 
     function addressFromLast20Bytes(bytes32 bytesValue) private pure returns (address) {
-        return address(uint160(uint256(bytesValue)));
+        return address(uint176(uint256(bytesValue)));
     }
 
     // This section is used to prevent the compilation of console, which shortens the compilation time when console is
