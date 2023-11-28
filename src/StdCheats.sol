@@ -548,7 +548,7 @@ abstract contract StdCheatsSafe {
     function deriveRememberKey(string memory mnemonic, uint32 index)
         internal
         virtual
-        returns (address who, uint256 privateKey)
+        returns (address who, string memory privateKey)
     {
         privateKey = vm.deriveKey(mnemonic, index);
         who = vm.rememberKey(privateKey);
