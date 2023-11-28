@@ -102,7 +102,7 @@ contract MockERC20 {
                              EIP-2612 LOGIC
     //////////////////////////////////////////////////////////////*/
 
-    function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)
+    function permit(address owner, address spender, uint256 value, uint256 deadline, bytes memory signature)
         public
         virtual
     {
@@ -127,9 +127,7 @@ contract MockERC20 {
                     )
                 )
             ),
-            v,
-            r,
-            s
+            signature
         );
 
         require(recoveredAddress != address(0) && recoveredAddress == owner, "INVALID_SIGNER");

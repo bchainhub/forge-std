@@ -118,7 +118,7 @@ interface VmSafe {
     // ======== EVM  ========
 
     // Gets the address for a given private key
-    function addr(string privateKey) external pure returns (address keyAddr);
+    function addr(string memory privateKey) external pure returns (address keyAddr);
 
     // Gets the nonce of an account.
     // See `getNonce(Wallet memory wallet)` for an alternative way to manage users and get their nonces.
