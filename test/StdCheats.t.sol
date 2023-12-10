@@ -484,7 +484,7 @@ contract StdCheatsForkTest is Test {
     function test_CannotAssumeNoBlacklisted_EOA() external {
         // We deploy a mock version so we can properly test the revert.
         StdCheatsMock stdCheatsMock = new StdCheatsMock();
-        address eoa = vm.addr({privateKey: 1});
+        address eoa = vm.addr({privateKey: "01"});
         vm.expectRevert("StdCheats assumeNotBlacklisted(address,address): Token address is not a contract.");
         stdCheatsMock.exposed_assumeNotBlacklisted(eoa, address(0));
     }
