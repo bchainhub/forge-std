@@ -373,7 +373,8 @@ contract StdCheatsTest is Test {
         // all should pass since these addresses are payable
 
         // vitalik.eth
-        stdCheatsMock.exposed_assumePayable(0xcb00d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
+        stdCheatsMock.exposed_assumePayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -398,8 +399,9 @@ contract StdCheatsTest is Test {
         // all should revert since these addresses are payable
 
         // vitalik.eth
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
         vm.expectRevert();
-        stdCheatsMock.exposed_assumeNotPayable(0xcb49d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
