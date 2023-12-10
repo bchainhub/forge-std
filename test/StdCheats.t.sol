@@ -439,7 +439,7 @@ contract StdCheatsTest is Test {
 
         deployCodeTo(
             "StdCheats.t.sol:MockContractWithConstructorArgs",
-            abi.encode(uint256(6), true, bytes20(arbitraryAddress)),
+            abi.encode(uint256(6), true, bytes22(arbitraryAddress)),
             1 ether,
             arbitraryAddress
         );
@@ -449,7 +449,7 @@ contract StdCheatsTest is Test {
         assertEq(arbitraryAddress.balance, 1 ether);
         assertEq(ct.x(), 6);
         assertTrue(ct.y());
-        assertEq(ct.z(), bytes20(arbitraryAddress));
+        assertEq(ct.z(), bytes22(arbitraryAddress));
     }
 }
 
