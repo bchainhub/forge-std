@@ -39,7 +39,6 @@ abstract contract StdCheatsSafe {
         bytes gas;
         bytes nonce;
         address to;
-        bytes txType;
         bytes value;
     }
 
@@ -60,7 +59,6 @@ abstract contract StdCheatsSafe {
         uint256 gas;
         uint256 nonce;
         address to;
-        uint256 txType;
         uint256 value;
     }
 
@@ -88,11 +86,8 @@ abstract contract StdCheatsSafe {
         bytes32 hash;
         uint256 nonce;
         bytes1 opcode;
-        bytes32 r;
-        bytes32 s;
-        uint256 txType;
+        bytes sig;
         address to;
-        uint8 v;
         uint256 value;
     }
 
@@ -384,7 +379,6 @@ abstract contract StdCheatsSafe {
         txDetail.from = rawDetail.from;
         txDetail.to = rawDetail.to;
         txDetail.nonce = _bytesToUint(rawDetail.nonce);
-        txDetail.txType = _bytesToUint(rawDetail.txType);
         txDetail.value = _bytesToUint(rawDetail.value);
         txDetail.gas = _bytesToUint(rawDetail.gas);
         txDetail.accessList = rawDetail.accessList;

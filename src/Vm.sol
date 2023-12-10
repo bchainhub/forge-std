@@ -392,8 +392,8 @@ interface VmSafe {
     // Labels an address in call traces
     function label(address account, string calldata newLabel) external;
 
-    // Signs data, (Wallet, digest) => (v, r, s)
-    function sign(Wallet calldata wallet, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
+    // Signs data, (Wallet, digest) => (sig)
+    function sign(Wallet calldata wallet, bytes32 digest) external returns (bytes memory sig);
 
     // ======== Scripts ========
 
