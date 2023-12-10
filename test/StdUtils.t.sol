@@ -244,10 +244,10 @@ contract StdUtilsTest is Test {
     //////////////////////////////////////////////////////////////////////////*/
 
     function test_ComputeCreateAddress() external {
-        address deployer = 0x6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
+        address deployer = 0xcb006C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
         uint256 nonce = 14;
         address createAddress = computeCreateAddress(deployer, nonce);
-        assertEq(createAddress, 0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45);
+        assertEq(createAddress, 0xcb0068b3465833fb72A70ecDF485E0e4C7bD8665Fc45);
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -257,9 +257,9 @@ contract StdUtilsTest is Test {
     function test_ComputeCreate2Address() external {
         bytes32 salt = bytes32(uint256(31415));
         bytes32 initcodeHash = keccak256(abi.encode(0x6080));
-        address deployer = 0x6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
+        address deployer = 0xcb006C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
         address create2Address = computeCreate2Address(salt, initcodeHash, deployer);
-        assertEq(create2Address, 0xB147a5d25748fda14b463EB04B111027C290f4d3);
+        assertEq(create2Address, 0xcb00B147a5d25748fda14b463EB04B111027C290f4d3);
     }
 
     function test_ComputeCreate2AddressWithDefaultDeployer() external {
@@ -267,7 +267,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = hashInitCode(hex"6080", "");
         assertEq(initcodeHash, 0x1a578b7a4b0b5755db6d121b4118d4bc68fe170dca840c59bc922f14175a76b0);
         address create2Address = computeCreate2Address(salt, initcodeHash);
-        assertEq(create2Address, 0xc0ffEe2198a06235aAbFffe5Db0CacF1717f5Ac6);
+        assertEq(create2Address, 0xcb00c0ffEe2198a06235aAbFffe5Db0CacF1717f5Ac6);
     }
 }
 
@@ -276,14 +276,14 @@ contract StdUtilsForkTest is Test {
                                   GET TOKEN BALANCES
     //////////////////////////////////////////////////////////////////////////*/
 
-    address internal SHIB = 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
-    address internal SHIB_HOLDER_0 = 0x855F5981e831D83e6A4b4EBFCAdAa68D92333170;
-    address internal SHIB_HOLDER_1 = 0x8F509A90c2e47779cA408Fe00d7A72e359229AdA;
-    address internal SHIB_HOLDER_2 = 0x0e3bbc0D04fF62211F71f3e4C45d82ad76224385;
+    address internal SHIB = 0xcb0095aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
+    address internal SHIB_HOLDER_0 = 0xcb00855F5981e831D83e6A4b4EBFCAdAa68D92333170;
+    address internal SHIB_HOLDER_1 = 0xcb008F509A90c2e47779cA408Fe00d7A72e359229AdA;
+    address internal SHIB_HOLDER_2 = 0xcb000e3bbc0D04fF62211F71f3e4C45d82ad76224385;
 
-    address internal USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal USDC_HOLDER_0 = 0xDa9CE944a37d218c3302F6B82a094844C6ECEb17;
-    address internal USDC_HOLDER_1 = 0x3e67F4721E6d1c41a015f645eFa37BEd854fcf52;
+    address internal USDC = 0xcb00A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+    address internal USDC_HOLDER_0 = 0xcb00Da9CE944a37d218c3302F6B82a094844C6ECEb17;
+    address internal USDC_HOLDER_1 = 0xcb003e67F4721E6d1c41a015f645eFa37BEd854fcf52;
 
     function setUp() public {
         // All tests of the `getTokenBalances` method are fork tests using live contracts.
@@ -296,7 +296,7 @@ contract StdUtilsForkTest is Test {
 
         // The UniswapV2Factory contract has neither a `balanceOf` function nor a fallback function,
         // so the `balanceOf` call should revert.
-        address token = address(0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
+        address token = address(0xcb005C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
         address[] memory addresses = new address[](1);
         addresses[0] = USDC_HOLDER_0;
 
