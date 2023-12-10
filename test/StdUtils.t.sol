@@ -267,7 +267,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = hashInitCode(hex"6080", "");
         assertEq(initcodeHash, 0x1a578b7a4b0b5755db6d121b4118d4bc68fe170dca840c59bc922f14175a76b0);
         address create2Address = computeCreate2Address(salt, initcodeHash);
-        assertEq(create2Address, 0xcb00c0ffEe2198a06235aAbFffe5Db0CacF1717f5Ac6);
+        assertEq(create2Address, 0xcb46c0ffEe2198a06235aAbFffe5Db0CacF1717f5Ac6);
     }
 }
 
@@ -308,7 +308,7 @@ contract StdUtilsForkTest is Test {
         // We deploy a mock version so we can properly test the revert.
         StdUtilsMock stdUtils = new StdUtilsMock();
 
-        address eoa = vm.addr({privateKey: 1});
+        address eoa = vm.addr({privateKey: "01"});
         address[] memory addresses = new address[](1);
         addresses[0] = USDC_HOLDER_0;
         vm.expectRevert("StdUtils getTokenBalances(address,address[]): Token address is not a contract.");
