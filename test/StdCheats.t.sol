@@ -469,11 +469,12 @@ contract StdCheatsMock is StdCheats {
 }
 
 contract StdCheatsForkTest is Test {
-    address internal constant SHIB = 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
-    address internal constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal constant USDC_BLACKLISTED_USER = 0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD;
-    address internal constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
-    address internal constant USDT_BLACKLISTED_USER = 0x8f8a8F4B54a2aAC7799d7bc81368aC27b852822A;
+    // CORETODO set real address (current is just old eth address with added refix and checksum)
+    address internal constant SHIB = 0xcb0095aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
+    address internal constant USDC = 0xcb00A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+    address internal constant USDC_BLACKLISTED_USER = 0xcb001E34A77868E19A6647b1f2F47B51ed72dEDE95DD;
+    address internal constant USDT = 0xcb00dAC17F958D2ee523a2206206994597C13D831ec7;
+    address internal constant USDT_BLACKLISTED_USER = 0xcb008f8a8F4B54a2aAC7799d7bc81368aC27b852822A;
 
     function setUp() public {
         // All tests of the `assumeNotBlacklisted` method are fork tests using live contracts.
