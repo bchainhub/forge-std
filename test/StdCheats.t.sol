@@ -242,7 +242,10 @@ contract StdCheatsTest is Test {
 
     function test_ParseJsonTxDetail() public {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        bytes memory rootBytes = bytes(root);
+        bytes memory pathBytes = bytes("/test/fixtures/broadcast.log.json");
+        string memory path = string(rootBytes.concat(pathBytes));
+        // string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
         string memory json = vm.readFile(path);
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
         RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
