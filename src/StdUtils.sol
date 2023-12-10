@@ -87,8 +87,10 @@ abstract contract StdUtils {
         console2_log_StdUtils("Bound result", vm.toString(result));
     }
 
-    function boundPrivateKey(string memory privateKey) internal pure virtual returns (uint256 result) {
-        result = _bound(privateKey, 1, SECP256K1_ORDER - 1);
+    // CORETODO: Think how privateKey could be bounded
+    function boundPrivateKey(string memory privateKey) internal pure virtual returns (string memory result) {
+        // result = _bound(privateKey, 1, SECP256K1_ORDER - 1);
+        result = privateKey;
     }
 
     function bytesToUint(bytes memory b) internal pure virtual returns (uint256) {
