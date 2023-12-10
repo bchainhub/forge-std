@@ -180,7 +180,7 @@ contract StdStorageTest is Test {
 
     function testFail_StorageCheckedWriteMapPacked() public {
         // expect PackedSlot error but not external call so cant expectRevert
-        stdstore.target(address(test)).sig(test.read_struct_lower.selector).with_key(address(uint160(1337)))
+        stdstore.target(address(test)).sig(test.read_struct_lower.selector).with_key(address(uint176(1337)))
             .checked_write(100);
     }
 
@@ -188,7 +188,7 @@ contract StdStorageTest is Test {
         uint256 full = test.map_packed(address(1337));
         // keep upper 128, set lower 128 to 1337
         full = (full & (uint256((1 << 128) - 1) << 128)) | 1337;
-        stdstore.target(address(test)).sig(test.map_packed.selector).with_key(address(uint160(1337))).checked_write(
+        stdstore.target(address(test)).sig(test.map_packed.selector).with_key(address(uint176(1337))).checked_write(
             full
         );
         assertEq(1337, test.read_struct_lower(address(1337)));
@@ -282,7 +282,7 @@ contract StorageTest {
 
         uint256 two = (1 << 128) | 1;
         map_packed[msg.sender] = two;
-        map_packed[address(uint160(1337))] = 1 << 128;
+        map_packed[address(uint176(1337))] = 1 << 128;
     }
 
     function read_struct_upper(address who) public view returns (uint256) {
