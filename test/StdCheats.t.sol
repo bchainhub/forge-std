@@ -244,7 +244,7 @@ contract StdCheatsTest is Test {
         string memory root = vm.projectRoot();
         bytes memory rootBytes = bytes(root);
         bytes memory pathBytes = bytes("/test/fixtures/broadcast.log.json");
-        string memory path = string(rootBytes.concat(pathBytes));
+        string memory path = string(bytes.concat(rootBytes, pathBytes));
         // string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
         string memory json = vm.readFile(path);
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
