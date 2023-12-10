@@ -249,10 +249,6 @@ contract StdCheatsTest is Test {
     function test_ParseJsonTxDetail() public {
         string memory root = vm.projectRoot();
         string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
-        // bytes memory rootBytes = bytes(root);
-        // bytes memory pathBytes = bytes("/test/fixtures/broadcast.log.json");
-        // string memory path = string(bytes.concat(rootBytes, pathBytes));
-        // string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
         string memory json = vm.readFile(path);
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
         RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
@@ -270,7 +266,7 @@ contract StdCheatsTest is Test {
 
     function test_ReadEIP1559Transaction() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         uint256 index = 0;
         Tx1559 memory transaction = readTx1559(path, index);
         transaction;
@@ -278,14 +274,14 @@ contract StdCheatsTest is Test {
 
     function test_ReadEIP1559Transactions() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         Tx1559[] memory transactions = readTx1559s(path);
         transactions;
     }
 
     function test_ReadReceipt() public {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         uint256 index = 5;
         Receipt memory receipt = readReceipt(path, index);
         assertEq(
@@ -296,7 +292,7 @@ contract StdCheatsTest is Test {
 
     function test_ReadReceipts() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         Receipt[] memory receipts = readReceipts(path);
         receipts;
     }
