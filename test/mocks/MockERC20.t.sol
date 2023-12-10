@@ -291,10 +291,10 @@ contract MockERC20Test is StdCheats, Test {
         }
     }
 
-    function testPermit(uint248 privKey, address to, uint256 amount, uint256 deadline) public {
-        uint256 privateKey = privKey;
+    function testPermit(string memory privKey, address to, uint256 amount, uint256 deadline) public {
+        string memory privateKey = privKey;
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (privateKey == "") privateKey = "01";
 
         address owner = vm.addr(privateKey);
 
@@ -355,11 +355,11 @@ contract MockERC20Test is StdCheats, Test {
         token.transferFrom(from, to, sendAmount);
     }
 
-    function testFailPermitBadNonce(uint256 privateKey, address to, uint256 amount, uint256 deadline, uint256 nonce)
+    function testFailPermitBadNonce(string memory privateKey, address to, uint256 amount, uint256 deadline, uint256 nonce)
         public
     {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (privateKey == "") privateKey = "01";
         if (nonce == 0) nonce = 1;
 
         address owner = vm.addr(privateKey);
@@ -378,9 +378,9 @@ contract MockERC20Test is StdCheats, Test {
         token.permit(owner, to, amount, deadline, sig);
     }
 
-    function testFailPermitBadDeadline(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitBadDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (privateKey == "") privateKey = "01";
 
         address owner = vm.addr(privateKey);
 
@@ -398,9 +398,9 @@ contract MockERC20Test is StdCheats, Test {
         token.permit(owner, to, amount, deadline + 1, sig);
     }
 
-    function testFailPermitPastDeadline(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitPastDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         deadline = bound(deadline, 0, block.timestamp - 1);
-        if (privateKey == 0) privateKey = 1;
+        if (privateKey == "") privateKey = "01";
 
         address owner = vm.addr(privateKey);
 
@@ -418,9 +418,9 @@ contract MockERC20Test is StdCheats, Test {
         token.permit(owner, to, amount, deadline, sig);
     }
 
-    function testFailPermitReplay(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitReplay(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (privateKey == "") privateKey = "01";
 
         address owner = vm.addr(privateKey);
 

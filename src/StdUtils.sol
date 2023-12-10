@@ -87,7 +87,7 @@ abstract contract StdUtils {
         console2_log_StdUtils("Bound result", vm.toString(result));
     }
 
-    function boundPrivateKey(uint256 privateKey) internal pure virtual returns (uint256 result) {
+    function boundPrivateKey(string memory privateKey) internal pure virtual returns (uint256 result) {
         result = _bound(privateKey, 1, SECP256K1_ORDER - 1);
     }
 
