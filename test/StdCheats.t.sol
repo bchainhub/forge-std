@@ -342,7 +342,8 @@ contract StdCheatsTest is Test {
 
     function testFuzz_AssumeAddressIsNot(address addr) external {
         // skip over Payable and NonPayable enums
-        for (uint8 i = 2; i < uint8(type(AddressType).max); i++) {
+        // Ylem cant get max of enum so setted up the real value.
+        for (uint8 i = 2; i < uint8(4); i++) {
             assumeAddressIsNot(addr, AddressType(i));
         }
         assertTrue(addr != address(0));
