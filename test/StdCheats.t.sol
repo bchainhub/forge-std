@@ -228,7 +228,7 @@ contract StdCheatsTest is Test {
     function concatStrings(string memory a, string memory b) internal pure returns (string memory c) {
         bytes memory aBytes = bytes(a);
         bytes memory bBytes = bytes(b);
-        string memory c = string(bytes.concat(aBytes, bBytes));
+        c = string(bytes.concat(aBytes, bBytes));
     }
 
     function test_DeriveRememberKey() public {
