@@ -359,7 +359,7 @@ contract StdCheatsTest is Test {
 
         // VM address
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        stdCheatsMock.exposed_assumePayable(address(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D));
 
         // Console address
         vm.expectRevert();
