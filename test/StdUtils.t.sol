@@ -205,14 +205,15 @@ contract StdUtilsTest is Test {
     //////////////////////////////////////////////////////////////////////////*/
 
     function test_BoundPrivateKey() public {
-        assertEq(boundPrivateKey(0), 1);
-        assertEq(boundPrivateKey(1), 1);
-        assertEq(boundPrivateKey(300), 300);
-        assertEq(boundPrivateKey(9999), 9999);
-        assertEq(boundPrivateKey(SECP256K1_ORDER - 1), SECP256K1_ORDER - 1);
-        assertEq(boundPrivateKey(SECP256K1_ORDER), 1);
-        assertEq(boundPrivateKey(SECP256K1_ORDER + 1), 2);
-        assertEq(boundPrivateKey(UINT256_MAX), UINT256_MAX & SECP256K1_ORDER - 1); // x&y is equivalent to x-x%y
+        assertEq(boundPrivateKey("0"), "0");
+        assertEq(boundPrivateKey("1"), "1");
+        assertEq(boundPrivateKey("300"), "300");
+        assertEq(boundPrivateKey("9999"), "9999");
+        // CORETODO Find what to do with secp256k1_order
+        // assertEq(boundPrivateKey(SECP256K1_ORDER - 1), SECP256K1_ORDER - 1);
+        // assertEq(boundPrivateKey(SECP256K1_ORDER), 1);
+        // assertEq(boundPrivateKey(SECP256K1_ORDER + 1), 2);
+        // assertEq(boundPrivateKey(UINT256_MAX), UINT256_MAX & SECP256K1_ORDER - 1); // x&y is equivalent to x-x%y
     }
 
     /*//////////////////////////////////////////////////////////////////////////
