@@ -75,8 +75,7 @@ interface VmSafe {
 
     struct Wallet {
         address addr;
-        uint256 publicKeyX;
-        uint256 publicKeyY;
+        string publicKey;
         string privateKey;
     }
 
