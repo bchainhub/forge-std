@@ -225,6 +225,12 @@ contract StdCheatsTest is Test {
         }
     }
 
+    function concatStrings(string memory a, string memory b) internal pure returns (string memory c) {
+        bytes memory aBytes = bytes(a);
+        bytes memory bBytes = bytes(b);
+        string memory c = string(bytes.concat(aBytes, bBytes));
+    }
+
     function test_DeriveRememberKey() public {
         string memory mnemonic = "test test test test test test test test test test test junk";
 
@@ -242,9 +248,10 @@ contract StdCheatsTest is Test {
 
     function test_ParseJsonTxDetail() public {
         string memory root = vm.projectRoot();
-        bytes memory rootBytes = bytes(root);
-        bytes memory pathBytes = bytes("/test/fixtures/broadcast.log.json");
-        string memory path = string(bytes.concat(rootBytes, pathBytes));
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
+        // bytes memory rootBytes = bytes(root);
+        // bytes memory pathBytes = bytes("/test/fixtures/broadcast.log.json");
+        // string memory path = string(bytes.concat(rootBytes, pathBytes));
         // string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
         string memory json = vm.readFile(path);
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
