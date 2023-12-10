@@ -359,8 +359,8 @@ contract StdCheatsTest is Test {
 
         // VM address
         vm.expectRevert();
-        // CORETODO set real address (current is just get from eth address by concat cb00)
-        stdCheatsMock.exposed_assumePayable(0xcb007109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
+        stdCheatsMock.exposed_assumePayable(0xcb497109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         // Console address
         vm.expectRevert();
@@ -373,7 +373,7 @@ contract StdCheatsTest is Test {
         // all should pass since these addresses are payable
 
         // vitalik.eth
-        stdCheatsMock.exposed_assumePayable(0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumePayable(0xcb00d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -387,7 +387,7 @@ contract StdCheatsTest is Test {
         // all should pass since these addresses are not payable
 
         // VM address
-        stdCheatsMock.exposed_assumeNotPayable(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb497109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
         // Console address
         stdCheatsMock.exposed_assumeNotPayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
@@ -399,7 +399,7 @@ contract StdCheatsTest is Test {
 
         // vitalik.eth
         vm.expectRevert();
-        stdCheatsMock.exposed_assumeNotPayable(0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb49d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
