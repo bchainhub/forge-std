@@ -491,7 +491,7 @@ contract MockERC721Test is StdCheats, Test {
 
         if (to == address(0) || to == from) to = address(0xBEEF);
 
-        if (uint256(uint160(to)) <= 18 || to.code.length > 0) return;
+        if (uint256(uint176(to)) <= 18 || to.code.length > 0) return;
 
         token.mint(from, id);
 
@@ -554,7 +554,7 @@ contract MockERC721Test is StdCheats, Test {
     function testSafeMintToEOA(uint256 id, address to) public {
         if (to == address(0)) to = address(0xBEEF);
 
-        if (uint256(uint160(to)) <= 18 || to.code.length > 0) return;
+        if (uint256(uint176(to)) <= 18 || to.code.length > 0) return;
 
         token.safeMint(to, id);
 
