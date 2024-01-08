@@ -512,9 +512,7 @@ abstract contract StdCheatsSafe {
         bytes32 HASH = keccak256(abi.encodePacked(name));
         bytes25 PREFIX;
         bytes memory privateKeyBytes = abi.encodePacked(PREFIX, HASH);
-        console2.log(privateKeyBytes);
         privateKey = vm.toString(privateKeyBytes);
-        console2.log(privateKey);
         addr = vm.addr(privateKey);
         vm.label(addr, name);
     }
