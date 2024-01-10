@@ -24,23 +24,12 @@ contract StdChainsMock is Test {
 contract StdChainsTest is Test {
     function test_ChainRpcInitialization() public {
         // RPCs specified in `foundry.toml` should be updated.
-        assertEq(getChain(1).rpcUrl, "https://mainnet.infura.io/v3/b1d3925804e74152b316ca7da97060d3");
-        assertEq(getChain("optimism_goerli").rpcUrl, "https://goerli.optimism.io/");
-        assertEq(getChain("arbitrum_one_goerli").rpcUrl, "https://goerli-rollup.arbitrum.io/rpc/");
-
-        // Environment variables should be the next fallback
-        assertEq(getChain("arbitrum_nova").rpcUrl, "https://nova.arbitrum.io/rpc");
-        vm.setEnv("ARBITRUM_NOVA_RPC_URL", "myoverride");
-        assertEq(getChain("arbitrum_nova").rpcUrl, "myoverride");
-        vm.setEnv("ARBITRUM_NOVA_RPC_URL", "https://nova.arbitrum.io/rpc");
+        assertEq(getChain("mainnet").rpcUrl, "https://xcbapi-arch-mainnet.coreblockchain.net");
+        assertEq(getChain("devin").rpcUrl, "https://xcbapi-arch-devin.coreblockchain.net/");
 
         // Cannot override RPCs defined in `foundry.toml`
         vm.setEnv("MAINNET_RPC_URL", "myoverride2");
-        assertEq(getChain("mainnet").rpcUrl, "https://mainnet.infura.io/v3/b1d3925804e74152b316ca7da97060d3");
-
-        // Other RPCs should remain unchanged.
-        assertEq(getChain(31337).rpcUrl, "http://127.0.0.1:8545");
-        assertEq(getChain("sepolia").rpcUrl, "https://sepolia.infura.io/v3/b9794ad1ddf84dfb8c34d6bb5dca2001");
+        assertEq(getChain("mainnet").rpcUrl, "https://xcbapi-arch-mainnet.coreblockchain.net");
     }
 
     function testFuzz_Rpc(string memory rpcAlias) internal {
@@ -54,9 +43,8 @@ contract StdChainsTest is Test {
     //     testRpc("goerli");
     //     testRpc("sepolia");
     //     testRpc("optimism");
-    //     testRpc("optimism_goerli");
+    //     testRpc("devin");
     //     testRpc("arbitrum_one");
-    //     testRpc("arbitrum_one_goerli");
     //     testRpc("arbitrum_nova");
     //     testRpc("polygon");
     //     testRpc("polygon_mumbai");
@@ -84,8 +72,8 @@ contract StdChainsTest is Test {
         // We deploy a mock to properly test the revert.
         StdChainsMock stdChainsMock = new StdChainsMock();
 
-        vm.expectRevert("StdChains setChain(string,ChainData): Chain ID 31337 already used by \"anvil\".");
-        stdChainsMock.exposed_setChain("anvil2", ChainData("Anvil", 31337, "URL"));
+        vm.expectRevert("StdChains setChain(string,ChainData): Chain ID 1 already used by \"mainnet\".");
+        stdChainsMock.exposed_setChain("mainnet2", ChainData("Mainnet", 1, "URL"));
     }
 
     function test_ChainBubbleUp() public {

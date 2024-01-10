@@ -101,7 +101,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testPermit() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -149,7 +149,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadNonce() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -167,7 +167,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadDeadline() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -186,7 +186,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitPastDeadline() public {
         uint256 oldTimestamp = block.timestamp;
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -205,7 +205,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitReplay() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -294,7 +294,7 @@ contract MockERC20Test is StdCheats, Test {
     function testPermit(string memory privKey, address to, uint256 amount, uint256 deadline) public {
         string memory privateKey = privKey;
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (bytes(privateKey).length == 0) privateKey = "01";
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
@@ -359,7 +359,7 @@ contract MockERC20Test is StdCheats, Test {
         public
     {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (bytes(privateKey).length == 0) privateKey = "01";
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
         if (nonce == 0) nonce = 1;
 
         address owner = vm.addr(privateKey);
@@ -380,7 +380,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitBadDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (bytes(privateKey).length == 0) privateKey = "01";
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
@@ -400,7 +400,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitPastDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         deadline = bound(deadline, 0, block.timestamp - 1);
-        if (bytes(privateKey).length == 0) privateKey = "01";
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
@@ -420,7 +420,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitReplay(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (bytes(privateKey).length == 0) privateKey = "01";
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
