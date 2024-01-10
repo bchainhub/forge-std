@@ -101,7 +101,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testPermit() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000BEEF";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -149,7 +149,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadNonce() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000BEEF";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -167,7 +167,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadDeadline() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000BEEF";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -186,7 +186,7 @@ contract MockERC20Test is StdCheats, Test {
 
     function testFailPermitPastDeadline() public {
         uint256 oldTimestamp = block.timestamp;
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000BEEF";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -205,7 +205,7 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitReplay() public {
-        string memory privateKey = "0xBEEF";
+        string memory privateKey = "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000BEEF";
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
