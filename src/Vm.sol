@@ -119,6 +119,7 @@ interface VmSafe {
     // Gets the address for a given private key
     function addr(string memory privateKey) external pure returns (address keyAddr);
 
+
     // Gets the nonce of an account.
     // See `getNonce(Wallet memory wallet)` for an alternative way to manage users and get their nonces.
     function getNonce(address account) external view returns (uint64 nonce);
@@ -407,7 +408,6 @@ interface VmSafe {
 
     // Has the next call (at this call depth only) create a transaction with the private key provided as the sender that can later be signed and sent onchain
     function broadcast(string memory privateKey) external;
-
     // Using the address that calls the test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
     function startBroadcast() external;
 
