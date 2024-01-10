@@ -308,7 +308,7 @@ contract StdUtilsForkTest is Test {
         // We deploy a mock version so we can properly test the revert.
         StdUtilsMock stdUtils = new StdUtilsMock();
 
-        address eoa = vm.addr({privateKey: "01"});
+        address eoa = vm.addr({privateKey: "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"});
         address[] memory addresses = new address[](1);
         addresses[0] = USDC_HOLDER_0;
         vm.expectRevert("StdUtils getTokenBalances(address,address[]): Token address is not a contract.");
