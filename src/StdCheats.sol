@@ -509,9 +509,9 @@ abstract contract StdCheatsSafe {
 
     // creates a labeled address and the corresponding private key
     function makeAddrAndKey(string memory name) internal virtual returns (address addr, string memory privateKey) {
-        bytes32 HASH = keccak256(abi.encodePacked(name));
-        bytes25 PREFIX;
-        bytes memory privateKeyBytes = abi.encodePacked(PREFIX, HASH);
+        bytes32 hash = keccak256(abi.encodePacked(name));
+        bytes25 prefix;
+        bytes memory privateKeyBytes = abi.encodePacked(prefix, hash);
         privateKey = vm.toString(privateKeyBytes);
         addr = vm.addr(privateKey);
         vm.label(addr, name);
