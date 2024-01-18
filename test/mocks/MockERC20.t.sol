@@ -294,8 +294,13 @@ contract MockERC20Test is StdCheats, Test {
     function testPermit(string memory privKey, address to, uint256 amount, uint256 deadline) public {
         string memory privateKey = privKey;
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
+        if (keccak256(bytes(privateKey)) == keccak256(bytes(""))) privateKey = hex"010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
+        if (bytes(privateKey).length == 0) privateKey = hex"010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
+        if (bytes(privateKey).length != 57) privateKey = hex"010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
+
+        // convert some strange symbols to bytes and then to hex (private key could be only in hex format but fuzzing returns random string)
+        privateKey = iToHex(bytes(privateKey));
         address owner = vm.addr(privateKey);
 
         bytes memory sig = vm.sign(
@@ -313,6 +318,21 @@ contract MockERC20Test is StdCheats, Test {
 
         assertEq(token.allowance(owner, to), amount);
         assertEq(token.nonces(owner), 1);
+    }
+
+    function iToHex(bytes memory buffer) public pure returns (string memory) {
+
+        // Fixed buffer size for hexadecimal convertion
+        bytes memory converted = new bytes(buffer.length * 2);
+
+        bytes memory _base = "0123456789abcdef";
+
+        for (uint256 i = 0; i < buffer.length; i++) {
+            converted[i * 2] = _base[uint8(buffer[i]) / _base.length];
+            converted[i * 2 + 1] = _base[uint8(buffer[i]) % _base.length];
+        }
+
+        return string(abi.encodePacked("0x", converted));
     }
 
     function testFailBurnInsufficientBalance(address to, uint256 mintAmount, uint256 burnAmount) public {

@@ -325,7 +325,7 @@ abstract contract StdCheatsSafe {
         // vm, console, and Create2Deployer addresses
         vm.assume(
             addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
+                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
         );
     }
 

@@ -370,7 +370,7 @@ contract StdCheatsTest is Test {
 
         // Create2Deployer
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
+        stdCheatsMock.exposed_assumePayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
 
         // all should pass since these addresses are payable
 
@@ -396,7 +396,7 @@ contract StdCheatsTest is Test {
         stdCheatsMock.exposed_assumeNotPayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
 
         // all should revert since these addresses are payable
 
@@ -423,7 +423,7 @@ contract StdCheatsTest is Test {
         assumeNotForgeAddress(addr);
         assertTrue(
             addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
+                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
         );
     }
 
@@ -610,9 +610,9 @@ contract RevertingContract {
 contract MockContractWithConstructorArgs {
     uint256 public immutable x;
     bool public y;
-    bytes20 public z;
+    bytes22 public z;
 
-    constructor(uint256 _x, bool _y, bytes20 _z) payable {
+    constructor(uint256 _x, bool _y, bytes22 _z) payable {
         x = _x;
         y = _y;
         z = _z;

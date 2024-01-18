@@ -247,7 +247,7 @@ contract StdUtilsTest is Test {
         address deployer = 0xcb896C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
         uint256 nonce = 14;
         address createAddress = computeCreateAddress(deployer, nonce);
-        assertEq(createAddress, 0xcb3568b3465833fb72A70ecDF485E0e4C7bD8665Fc45);
+        assertEq(createAddress, 0xcb321c982306f009916e01834c62a970b0d054d0c8b7);
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -259,7 +259,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = keccak256(abi.encode(0x6080));
         address deployer = 0xcb896C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
         address create2Address = computeCreate2Address(salt, initcodeHash, deployer);
-        assertEq(create2Address, 0xcb82B147a5d25748fda14b463EB04B111027C290f4d3);
+        assertEq(create2Address, 0xcb21ab15a74c8d16a6b2d020e505bc40856a7ae8782d);
     }
 
     function test_ComputeCreate2AddressWithDefaultDeployer() external {
@@ -267,7 +267,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = hashInitCode(hex"6080", "");
         assertEq(initcodeHash, 0x74659f0cefe00b461bbe600175963f3ae7f62668cf34ba8679bc314c8edb79b7);
         address create2Address = computeCreate2Address(salt, initcodeHash);
-        assertEq(create2Address, 0xcb46c0ffEe2198a06235aAbFffe5Db0CacF1717f5Ac6);
+        assertEq(create2Address, 0xcb54b40f2bb18269bcf47aac1398c47273eaaa1e0dcb);
     }
 }
 /* //todo:error2215 fix it when forking will work
