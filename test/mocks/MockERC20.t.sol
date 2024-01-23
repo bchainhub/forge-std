@@ -101,10 +101,10 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testPermit() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -115,7 +115,7 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, v, r, s);
+        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, sig);
 
         assertEq(token.allowance(owner, address(0xCAFE)), 1e18);
         assertEq(token.nonces(owner), 1);
@@ -149,10 +149,10 @@ contract MockERC20Test is StdCheats, Test {
     }
 
     function testFailPermitBadNonce() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -163,14 +163,14 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, v, r, s);
+        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, sig);
     }
 
     function testFailPermitBadDeadline() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -181,15 +181,15 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, address(0xCAFE), 1e18, block.timestamp + 1, v, r, s);
+        token.permit(owner, address(0xCAFE), 1e18, block.timestamp + 1, sig);
     }
 
     function testFailPermitPastDeadline() public {
         uint256 oldTimestamp = block.timestamp;
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -201,14 +201,14 @@ contract MockERC20Test is StdCheats, Test {
         );
 
         vm.warp(block.timestamp + 1);
-        token.permit(owner, address(0xCAFE), 1e18, oldTimestamp, v, r, s);
+        token.permit(owner, address(0xCAFE), 1e18, oldTimestamp, sig);
     }
 
     function testFailPermitReplay() public {
-        uint256 privateKey = 0xBEEF;
+        string memory privateKey = "0xBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBEBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEEFBEFBE";
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -219,8 +219,8 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, v, r, s);
-        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, v, r, s);
+        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, sig);
+        token.permit(owner, address(0xCAFE), 1e18, block.timestamp, sig);
     }
 
     function testMetadata(string calldata name, string calldata symbol, uint8 decimals) public {
@@ -291,14 +291,18 @@ contract MockERC20Test is StdCheats, Test {
         }
     }
 
-    function testPermit(uint248 privKey, address to, uint256 amount, uint256 deadline) public {
-        uint256 privateKey = privKey;
+    function testPermit(string memory privKey, address to, uint256 amount, uint256 deadline) public {
+        string memory privateKey = privKey;
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
 
+        if (keccak256(bytes(privateKey)) == keccak256(bytes(""))) privateKey = hex"010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
+        if (bytes(privateKey).length != 57) privateKey = hex"010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
+
+        // convert some strange symbols to bytes and then to hex (private key could be only in hex format but fuzzing returns random string)
+        privateKey = vm.toString(bytes(privateKey));
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -309,7 +313,7 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, to, amount, deadline, v, r, s);
+        token.permit(owner, to, amount, deadline, sig);
 
         assertEq(token.allowance(owner, to), amount);
         assertEq(token.nonces(owner), 1);
@@ -355,16 +359,16 @@ contract MockERC20Test is StdCheats, Test {
         token.transferFrom(from, to, sendAmount);
     }
 
-    function testFailPermitBadNonce(uint256 privateKey, address to, uint256 amount, uint256 deadline, uint256 nonce)
+    function testFailPermitBadNonce(string memory privateKey, address to, uint256 amount, uint256 deadline, uint256 nonce)
         public
     {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
         if (nonce == 0) nonce = 1;
 
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -375,16 +379,16 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, to, amount, deadline, v, r, s);
+        token.permit(owner, to, amount, deadline, sig);
     }
 
-    function testFailPermitBadDeadline(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitBadDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -395,16 +399,16 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, to, amount, deadline + 1, v, r, s);
+        token.permit(owner, to, amount, deadline + 1, sig);
     }
 
-    function testFailPermitPastDeadline(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitPastDeadline(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         deadline = bound(deadline, 0, block.timestamp - 1);
-        if (privateKey == 0) privateKey = 1;
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -415,16 +419,16 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, to, amount, deadline, v, r, s);
+        token.permit(owner, to, amount, deadline, sig);
     }
 
-    function testFailPermitReplay(uint256 privateKey, address to, uint256 amount, uint256 deadline) public {
+    function testFailPermitReplay(string memory privateKey, address to, uint256 amount, uint256 deadline) public {
         if (deadline < block.timestamp) deadline = block.timestamp;
-        if (privateKey == 0) privateKey = 1;
+        if (bytes(privateKey).length == 0) privateKey = "010101010101010101010101010010101010101010101010101001010010101010101010101010101010010101010101010101010101001010";
 
         address owner = vm.addr(privateKey);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(
+        bytes memory sig = vm.sign(
             privateKey,
             keccak256(
                 abi.encodePacked(
@@ -435,7 +439,7 @@ contract MockERC20Test is StdCheats, Test {
             )
         );
 
-        token.permit(owner, to, amount, deadline, v, r, s);
-        token.permit(owner, to, amount, deadline, v, r, s);
+        token.permit(owner, to, amount, deadline, sig);
+        token.permit(owner, to, amount, deadline, sig);
     }
 }

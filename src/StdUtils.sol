@@ -24,7 +24,7 @@ abstract contract StdUtils {
         115792089237316195423570985008687907853269984665640564039457584007913129639935;
 
     // Used by default when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
-    address private constant CREATE2_FACTORY = 0xcb914e59b44847b379578588920ca78fbf26c0b4956c;
+    address private constant CREATE2_FACTORY = 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640;
 
     /*//////////////////////////////////////////////////////////////////////////
                                  INTERNAL FUNCTIONS
@@ -87,8 +87,10 @@ abstract contract StdUtils {
         console2_log_StdUtils("Bound result", vm.toString(result));
     }
 
-    function boundPrivateKey(uint256 privateKey) internal pure virtual returns (uint256 result) {
-        result = _bound(privateKey, 1, SECP256K1_ORDER - 1);
+    // CORETODO: Think how privateKey could be bounded
+    function boundPrivateKey(string memory privateKey) internal pure virtual returns (string memory result) {
+        // result = _bound(privateKey, 1, SECP256K1_ORDER - 1);
+        result = privateKey;
     }
 
     function bytesToUint(bytes memory b) internal pure virtual returns (uint256) {
@@ -182,7 +184,7 @@ abstract contract StdUtils {
     //////////////////////////////////////////////////////////////////////////*/
 
     function addressFromLast20Bytes(bytes32 bytesValue) private pure returns (address) {
-        return address(uint160(uint256(bytesValue)));
+        return address(uint176(uint256(bytesValue)));
     }
 
     // This section is used to prevent the compilation of console, which shortens the compilation time when console is

@@ -39,7 +39,6 @@ abstract contract StdCheatsSafe {
         bytes gas;
         bytes nonce;
         address to;
-        bytes txType;
         bytes value;
     }
 
@@ -60,7 +59,6 @@ abstract contract StdCheatsSafe {
         uint256 gas;
         uint256 nonce;
         address to;
-        uint256 txType;
         uint256 value;
     }
 
@@ -88,11 +86,8 @@ abstract contract StdCheatsSafe {
         bytes32 hash;
         uint256 nonce;
         bytes1 opcode;
-        bytes32 r;
-        bytes32 s;
-        uint256 txType;
+        bytes sig;
         address to;
-        uint8 v;
         uint256 value;
     }
 
@@ -194,7 +189,7 @@ abstract contract StdCheatsSafe {
 
     struct Account {
         address addr;
-        uint256 key;
+        string key;
     }
 
     enum AddressType {
@@ -318,7 +313,7 @@ abstract contract StdCheatsSafe {
         assumeNotPrecompile(addr, _pureChainId());
     }
 
-    function assumeNotPrecompile(address addr, uint256 chainId) internal pure virtual {
+    function assumeNotPrecompile(address addr, uint256) internal pure virtual {
         // Note: For some chains like Optimism these are technically predeploys (i.e. bytecode placed at a specific
         // address), but the same rationale for excluding them applies so we include those too.
 
@@ -330,7 +325,7 @@ abstract contract StdCheatsSafe {
         // vm, console, and Create2Deployer addresses
         vm.assume(
             addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
+                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
         );
     }
 
@@ -384,7 +379,6 @@ abstract contract StdCheatsSafe {
         txDetail.from = rawDetail.from;
         txDetail.to = rawDetail.to;
         txDetail.nonce = _bytesToUint(rawDetail.nonce);
-        txDetail.txType = _bytesToUint(rawDetail.txType);
         txDetail.value = _bytesToUint(rawDetail.value);
         txDetail.gas = _bytesToUint(rawDetail.gas);
         txDetail.accessList = rawDetail.accessList;
@@ -514,8 +508,11 @@ abstract contract StdCheatsSafe {
     }
 
     // creates a labeled address and the corresponding private key
-    function makeAddrAndKey(string memory name) internal virtual returns (address addr, uint256 privateKey) {
-        privateKey = uint256(keccak256(abi.encodePacked(name)));
+    function makeAddrAndKey(string memory name) internal virtual returns (address addr, string memory privateKey) {
+        bytes32 hash = keccak256(abi.encodePacked(name));
+        bytes25 prefix;
+        bytes memory privateKeyBytes = abi.encodePacked(prefix, hash);
+        privateKey = vm.toString(privateKeyBytes);
         addr = vm.addr(privateKey);
         vm.label(addr, name);
     }
@@ -547,7 +544,7 @@ abstract contract StdCheatsSafe {
     function deriveRememberKey(string memory mnemonic, uint32 index)
         internal
         virtual
-        returns (address who, uint256 privateKey)
+        returns (address who, string memory privateKey)
     {
         privateKey = vm.deriveKey(mnemonic, index);
         who = vm.rememberKey(privateKey);

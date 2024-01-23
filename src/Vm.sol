@@ -75,9 +75,8 @@ interface VmSafe {
 
     struct Wallet {
         address addr;
-        uint256 publicKeyX;
-        uint256 publicKeyY;
-        uint256 privateKey;
+        string publicKey;
+        string privateKey;
     }
 
     struct FfiResult {
@@ -118,7 +117,8 @@ interface VmSafe {
     // ======== EVM  ========
 
     // Gets the address for a given private key
-    function addr(string calldata privateKey) external pure returns (address keyAddr);
+    function addr(string memory privateKey) external pure returns (address keyAddr);
+
 
     // Gets the nonce of an account.
     // See `getNonce(Wallet memory wallet)` for an alternative way to manage users and get their nonces.
@@ -128,7 +128,7 @@ interface VmSafe {
     function load(address target, bytes32 slot) external view returns (bytes32 data);
 
     // Signs data
-    function sign(string calldata privateKey, bytes32 digest) external pure returns (bytes calldata sig);
+    function sign(string calldata privateKey, bytes32 digest) external pure returns (bytes memory sig);
 
     // -------- Record Storage --------
     // Records all storage reads and writes
@@ -375,13 +375,13 @@ interface VmSafe {
     // ======== User Management ========
 
     // Derives a private key from the name, labels the account with that name, and returns the wallet
-    function createWallet(string calldata walletLabel) external returns (Wallet memory wallet);
+    function createWalletFromLabel(string memory walletLabel) external returns (Wallet memory wallet);
 
     // Generates a wallet from the private key and returns the wallet
-    function createWallet(uint256 privateKey) external returns (Wallet memory wallet);
+    function createWallet(string memory privateKey) external returns (Wallet memory wallet);
 
     // Generates a wallet from the private key, labels the account with that name, and returns the wallet
-    function createWallet(uint256 privateKey, string calldata walletLabel) external returns (Wallet memory wallet);
+    function createWallet(string memory privateKey, string calldata walletLabel) external returns (Wallet memory wallet);
 
     // Gets the label for the specified address
     function getLabel(address account) external returns (string memory currentLabel);
@@ -393,8 +393,8 @@ interface VmSafe {
     // Labels an address in call traces
     function label(address account, string calldata newLabel) external;
 
-    // Signs data, (Wallet, digest) => (v, r, s)
-    function sign(Wallet calldata wallet, bytes32 digest) external returns (uint8 v, bytes32 r, bytes32 s);
+    // Signs data, (Wallet, digest) => (sig)
+    function sign(Wallet calldata wallet, bytes32 digest) external returns (bytes memory sig);
 
     // ======== Scripts ========
 
@@ -407,8 +407,7 @@ interface VmSafe {
     function broadcast(address signer) external;
 
     // Has the next call (at this call depth only) create a transaction with the private key provided as the sender that can later be signed and sent onchain
-    function broadcast(string calldata privateKey) external;
-
+    function broadcast(string memory privateKey) external;
     // Using the address that calls the test contract, has all subsequent calls (at this call depth only) create transactions that can later be signed and sent onchain
     function startBroadcast() external;
 
@@ -416,7 +415,7 @@ interface VmSafe {
     function startBroadcast(address signer) external;
 
     // Has all subsequent calls (at this call depth only) create transactions with the private key provided that can later be signed and sent onchain
-    function startBroadcast(string calldata privateKey) external;
+    function startBroadcast(string memory privateKey) external;
 
     // Stops collecting onchain transactions
     function stopBroadcast() external;
@@ -424,16 +423,16 @@ interface VmSafe {
     // -------- Key Management --------
 
     // Derive a private key from a provided mnenomic string (or mnenomic file path) at the derivation path m/44'/60'/0'/0/{index}
-    function deriveKey(string calldata mnemonic, uint32 index) external pure returns (uint256 privateKey);
+    function deriveKey(string calldata mnemonic, uint32 index) external pure returns (string memory privateKey);
 
     // Derive a private key from a provided mnenomic string (or mnenomic file path) at {derivationPath}{index}
     function deriveKey(string calldata mnemonic, string calldata derivationPath, uint32 index)
         external
         pure
-        returns (uint256 privateKey);
+        returns (string memory privateKey);
 
     // Adds a private key to the local forge wallet and returns the address
-    function rememberKey(uint256 privateKey) external returns (address keyAddr);
+    function rememberKey(string memory privateKey) external returns (address keyAddr);
 
     // ======== Utilities ========
 
@@ -469,7 +468,7 @@ interface VmSafe {
         returns (address);
 
     // Compute the address of a contract created with CREATE2 using foundry's default CREATE2
-    // deployer: 0xcb914e59b44847b379578588920ca78fbf26c0b4956c, https://github.com/Arachnid/deterministic-deployment-proxy
+    // deployer: 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640, https://github.com/Arachnid/deterministic-deployment-proxy
     function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) external pure returns (address);
 
     // ======== JSON Parsing and Manipulation ========

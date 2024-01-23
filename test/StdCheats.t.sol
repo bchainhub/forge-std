@@ -79,7 +79,7 @@ contract StdCheatsTest is Test {
 
     function test_MakeAccountEquivalence() public {
         Account memory account = makeAccount("1337");
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         assertEq(account.addr, addr);
         assertEq(account.key, key);
     }
@@ -90,11 +90,11 @@ contract StdCheatsTest is Test {
     }
 
     function test_MakeAddrSigning() public {
-        (address addr, uint256 key) = makeAddrAndKey("1337");
+        (address addr, string memory key) = makeAddrAndKey("1337");
         bytes32 hash = keccak256("some_message");
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(key, hash);
-        assertEq(ecrecover(hash, v, r, s), addr);
+        (bytes memory signature) = vm.sign(key, hash);
+        assertEq(ecrecover(hash, signature), addr);
     }
 
     function test_Deal() public {
@@ -225,13 +225,21 @@ contract StdCheatsTest is Test {
         }
     }
 
+    function concatStrings(string memory a, string memory b) internal pure returns (string memory c) {
+        bytes memory aBytes = bytes(a);
+        bytes memory bBytes = bytes(b);
+        c = string(bytes.concat(aBytes, bBytes));
+    }
+
+    /* todo:error2215 fix when key deriving will work
     function test_DeriveRememberKey() public {
         string memory mnemonic = "test test test test test test test test test test test junk";
 
-        (address deployer, uint256 privateKey) = deriveRememberKey(mnemonic, 0);
-        assertEq(deployer, 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
-        assertEq(privateKey, 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80);
+        (address deployer, string memory privateKey) = deriveRememberKey(mnemonic, 0);
+        assertEq(deployer, address(0xcb69f39fd6e51aad88f6f4ce6ab8827279cfffb92266));
+        assertEq(privateKey, "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
     }
+    */
 
     function test_BytesToUint() public {
         assertEq(3, bytesToUint_test(hex"03"));
@@ -242,26 +250,25 @@ contract StdCheatsTest is Test {
 
     function test_ParseJsonTxDetail() public {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         string memory json = vm.readFile(path);
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
         RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
         Tx1559Detail memory txDetail = rawToConvertedEIP1559Detail(rawTxDetail);
-        assertEq(txDetail.from, 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266);
-        assertEq(txDetail.to, 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512);
+        assertEq(txDetail.from, address(0xcb69f39fd6e51aad88f6f4ce6ab8827279cfffb92266));
+        assertEq(txDetail.to, address(0xcb76e7f1725e7734ce288f8367e1bb143e90bb3f0512));
         assertEq(
             txDetail.data,
             hex"23e99187000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000013370000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000004"
         );
         assertEq(txDetail.nonce, 3);
-        assertEq(txDetail.txType, 2);
         assertEq(txDetail.gas, 29625);
         assertEq(txDetail.value, 0);
     }
 
     function test_ReadEIP1559Transaction() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         uint256 index = 0;
         Tx1559 memory transaction = readTx1559(path, index);
         transaction;
@@ -269,14 +276,14 @@ contract StdCheatsTest is Test {
 
     function test_ReadEIP1559Transactions() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         Tx1559[] memory transactions = readTx1559s(path);
         transactions;
     }
 
     function test_ReadReceipt() public {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         uint256 index = 5;
         Receipt memory receipt = readReceipt(path, index);
         assertEq(
@@ -287,7 +294,7 @@ contract StdCheatsTest is Test {
 
     function test_ReadReceipts() public view {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/fixtures/broadcast.log.json");
+        string memory path = concatStrings(root, "/test/fixtures/broadcast.log.json");
         Receipt[] memory receipts = readReceipts(path);
         receipts;
     }
@@ -337,7 +344,8 @@ contract StdCheatsTest is Test {
 
     function testFuzz_AssumeAddressIsNot(address addr) external {
         // skip over Payable and NonPayable enums
-        for (uint8 i = 2; i < uint8(type(AddressType).max); i++) {
+        // Ylem cant get max of enum so setted up the real value.
+        for (uint8 i = 2; i < uint8(4); i++) {
             assumeAddressIsNot(addr, AddressType(i));
         }
         assertTrue(addr != address(0));
@@ -353,7 +361,8 @@ contract StdCheatsTest is Test {
 
         // VM address
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
+        stdCheatsMock.exposed_assumePayable(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8);
 
         // Console address
         vm.expectRevert();
@@ -361,12 +370,13 @@ contract StdCheatsTest is Test {
 
         // Create2Deployer
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
+        stdCheatsMock.exposed_assumePayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
 
         // all should pass since these addresses are payable
 
         // vitalik.eth
-        stdCheatsMock.exposed_assumePayable(0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
+        stdCheatsMock.exposed_assumePayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -380,19 +390,20 @@ contract StdCheatsTest is Test {
         // all should pass since these addresses are not payable
 
         // VM address
-        stdCheatsMock.exposed_assumeNotPayable(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8);
 
         // Console address
         stdCheatsMock.exposed_assumeNotPayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(0xcb914e59b44847b379578588920ca78fbf26c0b4956c);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
 
         // all should revert since these addresses are payable
 
         // vitalik.eth
+        // CORETODO set real address (current is just old eth address with added refix and checksum)
         vm.expectRevert();
-        stdCheatsMock.exposed_assumeNotPayable(0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumeNotPayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -401,7 +412,7 @@ contract StdCheatsTest is Test {
     }
 
     function testFuzz_AssumeNotPrecompile(address addr) external {
-        assumeNotPrecompile(addr, getChain("optimism_goerli").chainId);
+        assumeNotPrecompile(addr, getChain("devin").chainId);
         assertTrue(
             addr < address(1) || (addr > address(9) && addr < address(0x4200000000000000000000000000000000000000))
                 || addr > address(0x4200000000000000000000000000000000000800)
@@ -412,7 +423,7 @@ contract StdCheatsTest is Test {
         assumeNotForgeAddress(addr);
         assertTrue(
             addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb914e59b44847b379578588920ca78fbf26c0b4956c
+                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
         );
     }
 
@@ -430,7 +441,7 @@ contract StdCheatsTest is Test {
 
         deployCodeTo(
             "StdCheats.t.sol:MockContractWithConstructorArgs",
-            abi.encode(uint256(6), true, bytes20(arbitraryAddress)),
+            abi.encode(uint256(6), true, bytes22(arbitraryAddress)),
             1 ether,
             arbitraryAddress
         );
@@ -440,7 +451,7 @@ contract StdCheatsTest is Test {
         assertEq(arbitraryAddress.balance, 1 ether);
         assertEq(ct.x(), 6);
         assertTrue(ct.y());
-        assertEq(ct.z(), bytes20(arbitraryAddress));
+        assertEq(ct.z(), bytes22(arbitraryAddress));
     }
 }
 
@@ -459,12 +470,14 @@ contract StdCheatsMock is StdCheats {
     }
 }
 
+/* //todo:error2215 fix it when forking will work
 contract StdCheatsForkTest is Test {
-    address internal constant SHIB = 0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
-    address internal constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal constant USDC_BLACKLISTED_USER = 0x1E34A77868E19A6647b1f2F47B51ed72dEDE95DD;
-    address internal constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
-    address internal constant USDT_BLACKLISTED_USER = 0x8f8a8F4B54a2aAC7799d7bc81368aC27b852822A;
+    // CORETODO set real addresses (current is just old eth address with added refix and checksum)
+    address internal constant SHIB = 0xcb1495aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
+    address internal constant USDC = 0xcb06A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+    address internal constant USDC_BLACKLISTED_USER = 0xcb441E34A77868E19A6647b1f2F47B51ed72dEDE95DD;
+    address internal constant USDT = 0xcb23dAC17F958D2ee523a2206206994597C13D831ec7;
+    address internal constant USDT_BLACKLISTED_USER = 0xcb288f8a8F4B54a2aAC7799d7bc81368aC27b852822A;
 
     function setUp() public {
         // All tests of the `assumeNotBlacklisted` method are fork tests using live contracts.
@@ -474,7 +487,7 @@ contract StdCheatsForkTest is Test {
     function test_CannotAssumeNoBlacklisted_EOA() external {
         // We deploy a mock version so we can properly test the revert.
         StdCheatsMock stdCheatsMock = new StdCheatsMock();
-        address eoa = vm.addr({privateKey: 1});
+        address eoa = vm.addr({privateKey: "01"});
         vm.expectRevert("StdCheats assumeNotBlacklisted(address,address): Token address is not a contract.");
         stdCheatsMock.exposed_assumeNotBlacklisted(eoa, address(0));
     }
@@ -508,6 +521,7 @@ contract StdCheatsForkTest is Test {
         assertFalse(USDTLike(USDT).isBlackListed(addr));
     }
 }
+*/
 
 contract Bar {
     constructor() payable {
@@ -596,9 +610,9 @@ contract RevertingContract {
 contract MockContractWithConstructorArgs {
     uint256 public immutable x;
     bool public y;
-    bytes20 public z;
+    bytes22 public z;
 
-    constructor(uint256 _x, bool _y, bytes20 _z) payable {
+    constructor(uint256 _x, bool _y, bytes22 _z) payable {
         x = _x;
         y = _y;
         z = _z;

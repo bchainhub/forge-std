@@ -9,7 +9,7 @@ contract VmTest is Test {
     // inadvertently moved between Vm and VmSafe. This test must be updated each time a function is
     // added to or removed from Vm or VmSafe.
     function test_interfaceId() public {
-        assertEq(type(VmSafe).interfaceId, bytes4(0x5e4a68ae), "VmSafe");
-        assertEq(type(Vm).interfaceId, bytes4(0x316cedc3), "Vm");
+        assertEq(type(VmSafe).interfaceId, bytes4(0xa2a884a9), "VmSafe");
+        assertEq(type(Vm).interfaceId, bytes4(0x68ad5d85), "Vm");
     }
 }
