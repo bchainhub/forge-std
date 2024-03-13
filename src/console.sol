@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=1.1.0;
 
+import {Checksum} from "./checksum.sol";
+
 library console {
-    address constant CONSOLE_ADDRESS = address(0xcb82000000000000000000636f6e736f6c652e6c6f67);
+    address immutable CONSOLE_ADDRESS = Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")));
 
     function _sendLogPayload(bytes memory payload) private view {
         uint256 payloadLength = payload.length;

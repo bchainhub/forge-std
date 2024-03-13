@@ -2,6 +2,7 @@
 pragma solidity >=1.1.0;
 
 import {VmSafe} from "./Vm.sol";
+import {Checksum} from "./checksum.sol";
 
 /**
  * StdChains provides information about EVM compatible chains that can be used in scripts/tests.
@@ -32,7 +33,7 @@ import {VmSafe} from "./Vm.sol";
  * Summarizing the above, the prioritization hierarchy is `setChain` -> `foundry.toml` -> environment variable -> defaults.
  */
 abstract contract StdChains {
-    VmSafe private constant vm = VmSafe(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    VmSafe private immutable vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
 
     bool private stdChainsInitialized;
 

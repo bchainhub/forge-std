@@ -2,6 +2,7 @@
 pragma solidity >=1.1.0;
 
 import {Vm} from "./Vm.sol";
+import {Checksum} from "./checksum.sol";
 
 struct StdStorage {
     mapping(address => mapping(bytes4 => mapping(bytes32 => uint256))) slots;
@@ -17,7 +18,7 @@ library stdStorageSafe {
     event SlotFound(address who, bytes4 fsig, bytes32 keysHash, uint256 slot);
     event WARNING_UninitedSlot(address who, uint256 slot);
 
-    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
 
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return bytes4(keccak256(bytes(sigStr)));
@@ -232,7 +233,7 @@ library stdStorageSafe {
 }
 
 library stdStorage {
-    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
 
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return stdStorageSafe.sigs(sigStr);
