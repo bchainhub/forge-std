@@ -4,7 +4,7 @@ pragma solidity >=1.1.0;
 import "../src/Test.sol";
 
 contract StdStyleTest is Test {
-    function test_StyleColor() public pure {
+    function test_StyleColor() public view {
         console2.log(StdStyle.red("StdStyle.red String Test"));
         console2.log(StdStyle.red(uint256(10e18)));
         console2.log(StdStyle.red(int256(-10e18)));
@@ -49,7 +49,7 @@ contract StdStyleTest is Test {
         console2.log(StdStyle.cyanBytes32("StdStyle.cyanBytes32"));
     }
 
-    function test_StyleFontWeight() public pure {
+    function test_StyleFontWeight() public view {
         console2.log(StdStyle.bold("StdStyle.bold String Test"));
         console2.log(StdStyle.bold(uint256(10e18)));
         console2.log(StdStyle.bold(int256(-10e18)));
@@ -87,7 +87,7 @@ contract StdStyleTest is Test {
         console2.log(StdStyle.inverseBytes32("StdStyle.inverseBytes32"));
     }
 
-    function test_StyleCombined() public pure {
+    function test_StyleCombined() public view {
         console2.log(StdStyle.red(StdStyle.bold("Red Bold String Test")));
         console2.log(StdStyle.green(StdStyle.dim(uint256(10e18))));
         console2.log(StdStyle.yellow(StdStyle.italic(int256(-10e18))));
@@ -95,16 +95,16 @@ contract StdStyleTest is Test {
         console2.log(StdStyle.magenta(StdStyle.inverse(true)));
     }
 
-    function test_StyleCustom() public pure {
+    function test_StyleCustom() public view {
         console2.log(h1("Custom Style 1"));
         console2.log(h2("Custom Style 2"));
     }
 
-    function h1(string memory a) private pure returns (string memory) {
+    function h1(string memory a) private view returns (string memory) {
         return StdStyle.cyan(StdStyle.inverse(StdStyle.bold(a)));
     }
 
-    function h2(string memory a) private pure returns (string memory) {
+    function h2(string memory a) private view returns (string memory) {
         return StdStyle.magenta(StdStyle.bold(StdStyle.underline(a)));
     }
 }

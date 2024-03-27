@@ -4,6 +4,7 @@ pragma solidity >=1.1.0;
 import "../src/StdCheats.sol";
 import "../src/Test.sol";
 import "../src/StdJson.sol";
+import {Checksum} from "../src/checksum.sol";
 
 contract StdCheatsTest is Test {
     Bar test;
@@ -236,7 +237,7 @@ contract StdCheatsTest is Test {
         string memory mnemonic = "test test test test test test test test test test test junk";
 
         (address deployer, string memory privateKey) = deriveRememberKey(mnemonic, 0);
-        assertEq(deployer, address(0xcb69f39fd6e51aad88f6f4ce6ab8827279cfffb92266));
+        assertEq(deployer, Checksum.toIcan(uint160(bytes20(hex"f39fd6e51aad88f6f4ce6ab8827279cfffb92266"))));
         assertEq(privateKey, "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
     }
     */
@@ -255,8 +256,8 @@ contract StdCheatsTest is Test {
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
         RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
         Tx1559Detail memory txDetail = rawToConvertedEIP1559Detail(rawTxDetail);
-        assertEq(txDetail.from, address(0xcb69f39fd6e51aad88f6f4ce6ab8827279cfffb92266));
-        assertEq(txDetail.to, address(0xcb76e7f1725e7734ce288f8367e1bb143e90bb3f0512));
+        assertEq(txDetail.from, Checksum.toIcan(uint160(bytes20(hex"f39fd6e51aad88f6f4ce6ab8827279cfffb92266")))); 
+        assertEq(txDetail.to, Checksum.toIcan(uint160(bytes20(hex"e7f1725e7734ce288f8367e1bb143e90bb3f0512")))); 
         assertEq(
             txDetail.data,
             hex"23e99187000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000013370000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000004"
@@ -350,7 +351,7 @@ contract StdCheatsTest is Test {
         }
         assertTrue(addr != address(0));
         assertTrue(addr < address(1) || addr > address(9));
-        assertTrue(addr != address(vm) || addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67);
+        assertTrue(addr != address(vm) || addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))); 
     }
 
     function test_AssumePayable() external {
@@ -362,21 +363,21 @@ contract StdCheatsTest is Test {
         // VM address
         vm.expectRevert();
         // CORETODO set real address (current is just old eth address with added refix and checksum)
-        stdCheatsMock.exposed_assumePayable(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8);
+        stdCheatsMock.exposed_assumePayable(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8")))); 
 
         // Console address
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
+        stdCheatsMock.exposed_assumePayable(Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))); 
 
         // Create2Deployer
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
+        stdCheatsMock.exposed_assumePayable(Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))); 
 
         // all should pass since these addresses are payable
 
         // vitalik.eth
         // CORETODO set real address (current is just old eth address with added refix and checksum)
-        stdCheatsMock.exposed_assumePayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumePayable(Checksum.toIcan(uint160(bytes20(hex"d8dA6BF26964aF9D7eEd9e03E53415D37aA96045"))));
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -390,20 +391,20 @@ contract StdCheatsTest is Test {
         // all should pass since these addresses are not payable
 
         // VM address
-        stdCheatsMock.exposed_assumeNotPayable(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8);
+        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8")))); 
 
         // Console address
-        stdCheatsMock.exposed_assumeNotPayable(0xcb82000000000000000000636f6e736f6c652e6c6f67);
+        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))); 
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
+        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))); 
 
         // all should revert since these addresses are payable
 
         // vitalik.eth
         // CORETODO set real address (current is just old eth address with added refix and checksum)
         vm.expectRevert();
-        stdCheatsMock.exposed_assumeNotPayable(0xcb48d8dA6BF26964aF9D7eEd9e03E53415D37aA96045);
+        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"d8dA6BF26964aF9D7eEd9e03E53415D37aA96045")))); 
 
         // mock payable contract
         MockContractPayable cp = new MockContractPayable();
@@ -422,8 +423,8 @@ contract StdCheatsTest is Test {
     function testFuzz_AssumeNotForgeAddress(address addr) external {
         assumeNotForgeAddress(addr);
         assertTrue(
-            addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
+            addr != address(vm) && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
+                && addr != Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))
         );
     }
 
@@ -473,11 +474,11 @@ contract StdCheatsMock is StdCheats {
 /* //todo:error2215 fix it when forking will work
 contract StdCheatsForkTest is Test {
     // CORETODO set real addresses (current is just old eth address with added refix and checksum)
-    address internal constant SHIB = 0xcb1495aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
-    address internal constant USDC = 0xcb06A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal constant USDC_BLACKLISTED_USER = 0xcb441E34A77868E19A6647b1f2F47B51ed72dEDE95DD;
-    address internal constant USDT = 0xcb23dAC17F958D2ee523a2206206994597C13D831ec7;
-    address internal constant USDT_BLACKLISTED_USER = 0xcb288f8a8F4B54a2aAC7799d7bc81368aC27b852822A;
+    address internal immutable SHIB = Checksum.toIcan(uint160(bytes20(hex"95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE")));
+    address internal immutable USDC = Checksum.toIcan(uint160(bytes20(hex"A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")));
+    address internal immutable USDC_BLACKLISTED_USER = Checksum.toIcan(uint160(bytes20(hex"1E34A77868E19A6647b1f2F47B51ed72dEDE95DD")));
+    address internal immutable USDT = Checksum.toIcan(uint160(bytes20(hex"dAC17F958D2ee523a2206206994597C13D831ec7")));
+    address internal immutable USDT_BLACKLISTED_USER = Checksum.toIcan(uint160(bytes20(hex"8f8a8F4B54a2aAC7799d7bc81368aC27b852822A")));
 
     function setUp() public {
         // All tests of the `assumeNotBlacklisted` method are fork tests using live contracts.

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=1.1.0;
 
+import {Checksum} from "./checksum.sol";
+
 /// @author philogy <https://github.com/philogy>
 /// @dev Code generated automatically by script.
 library safeconsole {
-    uint256 constant CONSOLE_ADDR = 0x00000000000000000000cb82000000000000000000636f6e736f6c652e6c6f67;
-
     // Credit to [0age](https://twitter.com/z0age/status/1654922202930888704) and [0xdapper](https://github.com/foundry-rs/forge-std/pull/374)
     // for the view-to-pure log trick.
     function _sendLogPayload(uint256 offset, uint256 size) private pure {
@@ -18,6 +18,8 @@ library safeconsole {
     }
 
     function _sendLogPayloadView(uint256 offset, uint256 size) private view {
+        uint256 CONSOLE_ADDR = uint256(uint176(Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))));
+
         assembly {
             pop(staticcall(gas(), CONSOLE_ADDR, offset, size, 0x0, 0x0))
         }

@@ -6,9 +6,10 @@ pragma experimental ABIEncoderV2;
 import {StdStorage, stdStorage} from "./StdStorage.sol";
 import {console2} from "./console2.sol";
 import {Vm} from "./Vm.sol";
+import {Checksum} from "./checksum.sol";
 
 abstract contract StdCheatsSafe {
-    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
+    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
 
     uint256 private constant UINT256_MAX =
         115792089237316195423570985008687907853269984665640564039457584007913129639935;
@@ -305,15 +306,15 @@ abstract contract StdCheatsSafe {
         vm.assume(!_isPayable(addr));
     }
 
-    function assumeNotZeroAddress(address addr) internal pure virtual {
+    function assumeNotZeroAddress(address addr) internal view virtual {
         vm.assume(addr != address(0));
     }
 
-    function assumeNotPrecompile(address addr) internal pure virtual {
+    function assumeNotPrecompile(address addr) internal view virtual {
         assumeNotPrecompile(addr, _pureChainId());
     }
 
-    function assumeNotPrecompile(address addr, uint256) internal pure virtual {
+    function assumeNotPrecompile(address addr, uint256) internal view virtual {
         // Note: For some chains like Optimism these are technically predeploys (i.e. bytecode placed at a specific
         // address), but the same rationale for excluding them applies so we include those too.
 
@@ -321,11 +322,11 @@ abstract contract StdCheatsSafe {
         vm.assume(addr < address(0x1) || addr > address(0x9));
     }
 
-    function assumeNotForgeAddress(address addr) internal pure virtual {
+    function assumeNotForgeAddress(address addr) internal view virtual {
         // vm, console, and Create2Deployer addresses
         vm.assume(
-            addr != address(vm) && addr != 0xcb82000000000000000000636f6e736f6c652e6c6f67
-                && addr != 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640
+            addr != address(vm) && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
+                && addr != Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))
         );
     }
 
@@ -622,8 +623,8 @@ abstract contract StdCheats is StdCheatsSafe {
     using stdStorage for StdStorage;
 
     StdStorage private stdstore;
-    Vm private constant vm = Vm(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
-    address private constant CONSOLE2_ADDRESS = 0xcb82000000000000000000636f6e736f6c652e6c6f67;
+    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));  
+    address private immutable CONSOLE2_ADDRESS = Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")));
 
     // Skip forward or rewind time by the specified number of seconds
     function skip(uint256 time) internal virtual {

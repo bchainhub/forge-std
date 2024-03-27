@@ -2,6 +2,7 @@
 pragma solidity >=1.1.0;
 
 import "../src/Test.sol";
+import {Checksum} from "../src/checksum.sol";
 
 contract StdUtilsMock is StdUtils {
     // We deploy a mock version so we can properly test expected reverts.
@@ -244,10 +245,10 @@ contract StdUtilsTest is Test {
     //////////////////////////////////////////////////////////////////////////*/
 
     function test_ComputeCreateAddress() external {
-        address deployer = 0xcb896C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
+        address deployer = Checksum.toIcan(uint160(bytes20(hex"6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9")));
         uint256 nonce = 14;
         address createAddress = computeCreateAddress(deployer, nonce);
-        assertEq(createAddress, 0xcb321c982306f009916e01834c62a970b0d054d0c8b7);
+        assertEq(createAddress, Checksum.toIcan(uint160(bytes20(hex"1c982306f009916e01834c62a970b0d054d0c8b7"))));
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -257,9 +258,9 @@ contract StdUtilsTest is Test {
     function test_ComputeCreate2Address() external {
         bytes32 salt = bytes32(uint256(31415));
         bytes32 initcodeHash = keccak256(abi.encode(0x6080));
-        address deployer = 0xcb896C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9;
+        address deployer = Checksum.toIcan(uint160(bytes20(hex"6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9"))); 
         address create2Address = computeCreate2Address(salt, initcodeHash, deployer);
-        assertEq(create2Address, 0xcb21ab15a74c8d16a6b2d020e505bc40856a7ae8782d);
+                assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"ab15a74c8d16a6b2d020e505bc40856a7ae8782d"))));
     }
 
     function test_ComputeCreate2AddressWithDefaultDeployer() external {
@@ -267,7 +268,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = hashInitCode(hex"6080", "");
         assertEq(initcodeHash, 0x74659f0cefe00b461bbe600175963f3ae7f62668cf34ba8679bc314c8edb79b7);
         address create2Address = computeCreate2Address(salt, initcodeHash);
-        assertEq(create2Address, 0xcb54b40f2bb18269bcf47aac1398c47273eaaa1e0dcb);
+        assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"b40f2bb18269bcf47aac1398c47273eaaa1e0dcb"))));
     }
 }
 /* //todo:error2215 fix it when forking will work
@@ -276,14 +277,14 @@ contract StdUtilsForkTest is Test {
     //                              GET TOKEN BALANCES
     //////////////////////////////////////////////////////////////////////////
 
-    address internal SHIB = 0xcb1495aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE;
-    address internal SHIB_HOLDER_0 = 0xcb59855F5981e831D83e6A4b4EBFCAdAa68D92333170;
-    address internal SHIB_HOLDER_1 = 0xcb858F509A90c2e47779cA408Fe00d7A72e359229AdA;
-    address internal SHIB_HOLDER_2 = 0xcb350e3bbc0D04fF62211F71f3e4C45d82ad76224385;
+    address internal SHIB = Checksum.toIcan(uint160(bytes20(hex"95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE"))); 
+    address internal SHIB_HOLDER_0 = Checksum.toIcan(uint160(bytes20(hex"855F5981e831D83e6A4b4EBFCAdAa68D92333170")));
+    address internal SHIB_HOLDER_1 = Checksum.toIcan(uint160(bytes20(hex"8F509A90c2e47779cA408Fe00d7A72e359229AdA")));
+    address internal SHIB_HOLDER_2 = Checksum.toIcan(uint160(bytes20(hex"0e3bbc0D04fF62211F71f3e4C45d82ad76224385")));
 
-    address internal USDC = 0xcb06A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal USDC_HOLDER_0 = 0xcb14Da9CE944a37d218c3302F6B82a094844C6ECEb17;
-    address internal USDC_HOLDER_1 = 0xcb693e67F4721E6d1c41a015f645eFa37BEd854fcf52;
+    address internal USDC = Checksum.toIcan(uint160(bytes20(hex"A0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")));
+    address internal USDC_HOLDER_0 = Checksum.toIcan(uint160(bytes20(hex"Da9CE944a37d218c3302F6B82a094844C6ECEb17")));
+    address internal USDC_HOLDER_1 = Checksum.toIcan(uint160(bytes20(hex"3e67F4721E6d1c41a015f645eFa37BEd854fcf52")));
 
     function setUp() public {
         // All tests of the `getTokenBalances` method are fork tests using live contracts.
@@ -296,7 +297,7 @@ contract StdUtilsForkTest is Test {
 
         // The UniswapV2Factory contract has neither a `balanceOf` function nor a fallback function,
         // so the `balanceOf` call should revert.
-        address token = address(0xcb335C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
+        address token = Checksum.toIcan(uint160(bytes20(hex"5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))); 
         address[] memory addresses = new address[](1);
         addresses[0] = USDC_HOLDER_0;
 

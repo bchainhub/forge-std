@@ -7,15 +7,16 @@ import {IMulticall3} from "./interfaces/IMulticall3.sol";
 import {MockERC20} from "./mocks/MockERC20.sol";
 import {MockERC721} from "./mocks/MockERC721.sol";
 import {VmSafe} from "./Vm.sol";
+import {Checksum} from "./checksum.sol";
 
 abstract contract StdUtils {
     /*//////////////////////////////////////////////////////////////////////////
                                      CONSTANTS
     //////////////////////////////////////////////////////////////////////////*/
 
-    IMulticall3 private constant multicall = IMulticall3(0xcb11ca11bde05977b3631167028862be2a173976ca11);
-    VmSafe private constant vm = VmSafe(address(0xcb69fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8));
-    address private constant CONSOLE2_ADDRESS = 0xcb82000000000000000000636f6e736f6c652e6c6f67;
+    IMulticall3 private immutable multicall = IMulticall3(Checksum.toIcan(uint160(bytes20(hex"ca11bde05977b3631167028862be2a173976ca11"))));
+    VmSafe private immutable vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    address private immutable CONSOLE2_ADDRESS = Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")));
     uint256 private constant INT256_MIN_ABS =
         57896044618658097711785492504343953926634992332820282019728792003956564819968;
     uint256 private constant SECP256K1_ORDER =
@@ -24,7 +25,7 @@ abstract contract StdUtils {
         115792089237316195423570985008687907853269984665640564039457584007913129639935;
 
     // Used by default when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
-    address private constant CREATE2_FACTORY = 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640;
+    address private immutable CREATE2_FACTORY = Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")));
 
     /*//////////////////////////////////////////////////////////////////////////
                                  INTERNAL FUNCTIONS
@@ -82,7 +83,7 @@ abstract contract StdUtils {
         result = y < INT256_MIN_ABS ? int256(~(INT256_MIN_ABS - y) + 1) : int256(y - INT256_MIN_ABS);
     }
 
-    function bound(int256 x, int256 min, int256 max) internal pure virtual returns (int256 result) {
+    function bound(int256 x, int256 min, int256 max) internal view virtual returns (int256 result) {
         result = _bound(x, min, max);
         console2_log_StdUtils("Bound result", vm.toString(result));
     }
@@ -100,14 +101,14 @@ abstract contract StdUtils {
 
     /// @dev Compute the address a contract will be deployed at for a given deployer address and nonce
     /// @notice adapted from Solmate implementation (https://github.com/Rari-Capital/solmate/blob/main/src/utils/LibRLP.sol)
-    function computeCreateAddress(address deployer, uint256 nonce) internal pure virtual returns (address) {
+    function computeCreateAddress(address deployer, uint256 nonce) internal view virtual returns (address) {
         console2_log_StdUtils("computeCreateAddress is deprecated. Please use vm.computeCreateAddress instead.");
         return vm.computeCreateAddress(deployer, nonce);
     }
 
     function computeCreate2Address(bytes32 salt, bytes32 initcodeHash, address deployer)
         internal
-        pure
+        view
         virtual
         returns (address)
     {
@@ -116,7 +117,7 @@ abstract contract StdUtils {
     }
 
     /// @dev returns the address of a contract created with CREATE2 using the default CREATE2 deployer
-    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) internal pure returns (address) {
+    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) internal view returns (address) {
         console2_log_StdUtils("computeCreate2Address is deprecated. Please use vm.computeCreate2Address instead.");
         return vm.computeCreate2Address(salt, initCodeHash);
     }
