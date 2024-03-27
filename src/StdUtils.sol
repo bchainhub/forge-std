@@ -83,7 +83,7 @@ abstract contract StdUtils {
         result = y < INT256_MIN_ABS ? int256(~(INT256_MIN_ABS - y) + 1) : int256(y - INT256_MIN_ABS);
     }
 
-    function bound(int256 x, int256 min, int256 max) internal pure virtual returns (int256 result) {
+    function bound(int256 x, int256 min, int256 max) internal view virtual returns (int256 result) {
         result = _bound(x, min, max);
         console2_log_StdUtils("Bound result", vm.toString(result));
     }
@@ -101,14 +101,14 @@ abstract contract StdUtils {
 
     /// @dev Compute the address a contract will be deployed at for a given deployer address and nonce
     /// @notice adapted from Solmate implementation (https://github.com/Rari-Capital/solmate/blob/main/src/utils/LibRLP.sol)
-    function computeCreateAddress(address deployer, uint256 nonce) internal pure virtual returns (address) {
+    function computeCreateAddress(address deployer, uint256 nonce) internal view virtual returns (address) {
         console2_log_StdUtils("computeCreateAddress is deprecated. Please use vm.computeCreateAddress instead.");
         return vm.computeCreateAddress(deployer, nonce);
     }
 
     function computeCreate2Address(bytes32 salt, bytes32 initcodeHash, address deployer)
         internal
-        pure
+        view
         virtual
         returns (address)
     {
@@ -117,7 +117,7 @@ abstract contract StdUtils {
     }
 
     /// @dev returns the address of a contract created with CREATE2 using the default CREATE2 deployer
-    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) internal pure returns (address) {
+    function computeCreate2Address(bytes32 salt, bytes32 initCodeHash) internal view returns (address) {
         console2_log_StdUtils("computeCreate2Address is deprecated. Please use vm.computeCreate2Address instead.");
         return vm.computeCreate2Address(salt, initCodeHash);
     }

@@ -18,8 +18,6 @@ library stdStorageSafe {
     event SlotFound(address who, bytes4 fsig, bytes32 keysHash, uint256 slot);
     event WARNING_UninitedSlot(address who, uint256 slot);
 
-    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
-
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return bytes4(keccak256(bytes(sigStr)));
     }
@@ -31,6 +29,8 @@ library stdStorageSafe {
     //  if deep map, will be keccak256(abi.encode(key1, keccak256(abi.encode(key0, uint(slot)))));
     //  if map struct, will be bytes32(uint256(keccak256(abi.encode(key1, keccak256(abi.encode(key0, uint(slot)))))) + structFieldDepth);
     function find(StdStorage storage self) internal returns (uint256) {
+        Vm vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+
         address who = self._target;
         bytes4 fsig = self._sig;
         uint256 field_depth = self._depth;
@@ -145,6 +145,8 @@ library stdStorageSafe {
     }
 
     function read(StdStorage storage self) private returns (bytes memory) {
+        Vm vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+
         address t = self._target;
         uint256 s = find(self);
         return abi.encode(vm.load(t, bytes32(s)));
@@ -174,6 +176,8 @@ library stdStorageSafe {
     }
 
     function parent(StdStorage storage self) internal returns (uint256, bytes32) {
+        Vm vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+
         address who = self._target;
         uint256 field_depth = self._depth;
         vm.startMappingRecording();
@@ -188,6 +192,8 @@ library stdStorageSafe {
     }
 
     function root(StdStorage storage self) internal returns (uint256) {
+        Vm vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    
         address who = self._target;
         uint256 field_depth = self._depth;
         vm.startMappingRecording();
@@ -233,8 +239,6 @@ library stdStorageSafe {
 }
 
 library stdStorage {
-    Vm private immutable vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
-
     function sigs(string memory sigStr) internal pure returns (bytes4) {
         return stdStorageSafe.sigs(sigStr);
     }
@@ -293,6 +297,8 @@ library stdStorage {
     }
 
     function checked_write(StdStorage storage self, bytes32 set) internal {
+        Vm vm = Vm(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+
         address who = self._target;
         bytes4 fsig = self._sig;
         uint256 field_depth = self._depth;

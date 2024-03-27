@@ -2,7 +2,7 @@
 pragma solidity >=1.1.0;
 
 import "../src/Test.sol";
-import {Checksum} from "./checksum.sol";
+import {Checksum} from "../src/checksum.sol";
 
 contract StdUtilsMock is StdUtils {
     // We deploy a mock version so we can properly test expected reverts.
@@ -260,7 +260,7 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = keccak256(abi.encode(0x6080));
         address deployer = Checksum.toIcan(uint160(bytes20(hex"6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9"))); 
         address create2Address = computeCreate2Address(salt, initcodeHash, deployer);
-        assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"ab15a74c8d16a6b2d020e505bc40856a7ae8782d"))));
+                assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"ab15a74c8d16a6b2d020e505bc40856a7ae8782d"))));
     }
 
     function test_ComputeCreate2AddressWithDefaultDeployer() external {

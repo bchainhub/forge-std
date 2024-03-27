@@ -306,15 +306,15 @@ abstract contract StdCheatsSafe {
         vm.assume(!_isPayable(addr));
     }
 
-    function assumeNotZeroAddress(address addr) internal pure virtual {
+    function assumeNotZeroAddress(address addr) internal view virtual {
         vm.assume(addr != address(0));
     }
 
-    function assumeNotPrecompile(address addr) internal pure virtual {
+    function assumeNotPrecompile(address addr) internal view virtual {
         assumeNotPrecompile(addr, _pureChainId());
     }
 
-    function assumeNotPrecompile(address addr, uint256) internal pure virtual {
+    function assumeNotPrecompile(address addr, uint256) internal view virtual {
         // Note: For some chains like Optimism these are technically predeploys (i.e. bytecode placed at a specific
         // address), but the same rationale for excluding them applies so we include those too.
 
@@ -322,7 +322,7 @@ abstract contract StdCheatsSafe {
         vm.assume(addr < address(0x1) || addr > address(0x9));
     }
 
-    function assumeNotForgeAddress(address addr) internal pure virtual {
+    function assumeNotForgeAddress(address addr) internal view virtual {
         // vm, console, and Create2Deployer addresses
         vm.assume(
             addr != address(vm) && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))

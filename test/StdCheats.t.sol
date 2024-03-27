@@ -4,7 +4,7 @@ pragma solidity >=1.1.0;
 import "../src/StdCheats.sol";
 import "../src/Test.sol";
 import "../src/StdJson.sol";
-import {Checksum} from "./checksum.sol";
+import {Checksum} from "../src/checksum.sol";
 
 contract StdCheatsTest is Test {
     Bar test;
@@ -397,7 +397,7 @@ contract StdCheatsTest is Test {
         stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))); 
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))); 
+        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"ab800ee5e10bfbd37bc647e01d94489b4e244817b07f")))); 
 
         // all should revert since these addresses are payable
 
