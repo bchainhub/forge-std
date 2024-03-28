@@ -256,8 +256,8 @@ contract StdCheatsTest is Test {
         bytes memory transactionDetails = json.parseRaw(".transactions[0].tx");
         RawTx1559Detail memory rawTxDetail = abi.decode(transactionDetails, (RawTx1559Detail));
         Tx1559Detail memory txDetail = rawToConvertedEIP1559Detail(rawTxDetail);
-        assertEq(txDetail.from, Checksum.toIcan(uint160(bytes20(hex"f39fd6e51aad88f6f4ce6ab8827279cfffb92266")))); 
-        assertEq(txDetail.to, Checksum.toIcan(uint160(bytes20(hex"e7f1725e7734ce288f8367e1bb143e90bb3f0512")))); 
+        assertEq(txDetail.from, address(0xcb69f39fd6e51aad88f6f4ce6ab8827279cfffb92266));
+        assertEq(txDetail.to, address(0xcb76e7f1725e7734ce288f8367e1bb143e90bb3f0512));
         assertEq(
             txDetail.data,
             hex"23e99187000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000013370000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000004"
