@@ -757,9 +757,9 @@ contract StdAssertionsTest is Test {
 
 contract TestTest is Test {
     modifier expectFailure(bool expectFail) {
-        bool preState = vm.load(HEVM_ADDRESS, bytes32("failed")) != bytes32(0x00);
+        bool preState = vm.load(HEVM_ADDRESS(), bytes32("failed")) != bytes32(0x00);
         _;
-        bool postState = vm.load(HEVM_ADDRESS, bytes32("failed")) != bytes32(0x00);
+        bool postState = vm.load(HEVM_ADDRESS(), bytes32("failed")) != bytes32(0x00);
 
         if (preState == true) {
             return;
@@ -769,7 +769,7 @@ contract TestTest is Test {
             require(postState == true, "expected failure not triggered");
 
             // unwind the expected failure
-            vm.store(HEVM_ADDRESS, bytes32("failed"), bytes32(uint256(0x00)));
+            vm.store(HEVM_ADDRESS(), bytes32("failed"), bytes32(uint256(0x00)));
         } else {
             require(postState == false, "unexpected failure was triggered");
         }
