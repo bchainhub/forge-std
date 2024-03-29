@@ -325,8 +325,12 @@ abstract contract StdCheatsSafe {
     function assumeNotForgeAddress(address addr) internal view virtual {
         // vm, console, and Create2Deployer addresses
         vm.assume(
-            addr != address(vm) && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
-                && addr != Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))
+                addr != address(vm) 
+                && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
+                // CREATE2 addresses
+                && addr != address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640)
+                && addr != address(0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f)
+                && addr != address(0xce8147e798c3a0d867f70f8785334da06c3418e18ba9)
         );
     }
 

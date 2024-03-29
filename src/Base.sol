@@ -10,8 +10,6 @@ abstract contract CommonBase {
     address internal VM_ADDRESS = Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8")));
     // console.sol and console2.sol work by executing a staticcall to this address.
     address internal CONSOLE = Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")));
-    // Used when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
-    address internal CREATE2_FACTORY = Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")));
     // Default address for tx.origin and msg.sender, 0x{cb,ab,ce}{chksum}1804c8ab1f12e6bbf3894d4083f33e07309d1f38.
     address internal DEFAULT_SENDER = Checksum.toIcan(uint160(bytes20(hex"1804c8ab1f12e6bbf3894d4083f33e07309d1f38")));
     // Address of the test contract, deployed by the DEFAULT_SENDER.
@@ -27,6 +25,18 @@ abstract contract CommonBase {
 
     Vm vm = Vm(VM_ADDRESS);
     StdStorage internal stdstore;
+
+    // Used when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
+    function CREATE2_FACTORY() internal returns (address) {
+        uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            return address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
+        } else if (chainId == 3) { // devin network - 'ab'
+            return address(0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f);
+        }
+        // private network
+        return address(0xce8147e798c3a0d867f70f8785334da06c3418e18ba9);
+    }
 }
 
 abstract contract TestBase is CommonBase {}
