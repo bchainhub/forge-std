@@ -248,7 +248,15 @@ contract StdUtilsTest is Test {
         address deployer = Checksum.toIcan(uint160(bytes20(hex"6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9")));
         uint256 nonce = 14;
         address createAddress = computeCreateAddress(deployer, nonce);
-        assertEq(createAddress, Checksum.toIcan(uint160(bytes20(hex"1c982306f009916e01834c62a970b0d054d0c8b7"))));
+
+         uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            assertEq(createAddress, address(0xcb321c982306f009916e01834c62a970b0d054d0c8b7));
+        } else if (chainId == 3) { // devin network - 'ab'
+            assertEq(createAddress, address(0xab84d7ee094e229e8f194f7265fd9bb7a8a9e6ed1fe3));
+        } else { // private
+            assertEq(createAddress, address(0xce09e7d18c6178c794766a27f9a6a0911fa1e68fe55d));
+        }
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -260,7 +268,15 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = keccak256(abi.encode(0x6080));
         address deployer = Checksum.toIcan(uint160(bytes20(hex"6C9FC64A53c1b71FB3f9Af64d1ae3A4931A5f4E9"))); 
         address create2Address = computeCreate2Address(salt, initcodeHash, deployer);
-                assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"ab15a74c8d16a6b2d020e505bc40856a7ae8782d"))));
+
+        uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            assertEq(create2Address, address(0xcb21ab15a74c8d16a6b2d020e505bc40856a7ae8782d));
+        } else if (chainId == 3) { // devin network - 'ab'
+            assertEq(create2Address, address(0xab3587c1699f331c50e0dec1ab42e20bdfc7b7210ad2));
+        } else { // private
+            assertEq(create2Address, address(0xce71682f53d45b9e7f3e741581c17b85d28e7575dd2e));
+        }
     }
 
     function test_ComputeCreate2AddressWithDefaultDeployer() external {
@@ -268,7 +284,15 @@ contract StdUtilsTest is Test {
         bytes32 initcodeHash = hashInitCode(hex"6080", "");
         assertEq(initcodeHash, 0x74659f0cefe00b461bbe600175963f3ae7f62668cf34ba8679bc314c8edb79b7);
         address create2Address = computeCreate2Address(salt, initcodeHash);
-        assertEq(create2Address, Checksum.toIcan(uint160(bytes20(hex"b40f2bb18269bcf47aac1398c47273eaaa1e0dcb"))));
+        
+        uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            assertEq(create2Address, address(0xcb54b40f2bb18269bcf47aac1398c47273eaaa1e0dcb));
+        } else if (chainId == 3) { // devin network - 'ab'
+            assertEq(create2Address, address(0xab71c98541ae90313549b8ac0200dbc288b92e857524));
+        } else { // private
+            assertEq(create2Address, address(0xce35ed904e98f138a9a957fa7b440acc7ff163e97af0));
+        }
     }
 }
 /* //todo:error2215 fix it when forking will work

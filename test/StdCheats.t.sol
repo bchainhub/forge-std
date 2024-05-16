@@ -371,7 +371,14 @@ contract StdCheatsTest is Test {
 
         // Create2Deployer
         vm.expectRevert();
-        stdCheatsMock.exposed_assumePayable(Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))); 
+        uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            stdCheatsMock.exposed_assumePayable(address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640)); 
+        } else if (chainId == 3) { // devin network - 'ab'
+            stdCheatsMock.exposed_assumePayable(address(0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f)); 
+        } else { // private
+            stdCheatsMock.exposed_assumePayable(address(0xce8147e798c3a0d867f70f8785334da06c3418e18ba9)); 
+        }
 
         // all should pass since these addresses are payable
 
@@ -397,7 +404,14 @@ contract StdCheatsTest is Test {
         stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))); 
 
         // Create2Deployer
-        stdCheatsMock.exposed_assumeNotPayable(Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))); 
+        uint8 chainId = uint8(block.chainid);
+        if (chainId == 1) { // mainnet - 'cb'
+            stdCheatsMock.exposed_assumeNotPayable(address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640)); 
+        } else if (chainId == 3) { // devin network - 'ab'
+            stdCheatsMock.exposed_assumeNotPayable(address(0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f)); 
+        } else { // private
+            stdCheatsMock.exposed_assumeNotPayable(address(0xce8147e798c3a0d867f70f8785334da06c3418e18ba9)); 
+        }
 
         // all should revert since these addresses are payable
 
@@ -423,8 +437,12 @@ contract StdCheatsTest is Test {
     function testFuzz_AssumeNotForgeAddress(address addr) external {
         assumeNotForgeAddress(addr);
         assertTrue(
-            addr != address(vm) && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
-                && addr != Checksum.toIcan(uint160(bytes20(hex"3edadf999cb7b8b3ebc71f5e97783176d289d640")))
+                addr != address(vm) 
+                && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
+                // CREATE2 addresses
+                && addr != address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640)
+                && addr != address(0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f)
+                && addr != address(0xce8147e798c3a0d867f70f8785334da06c3418e18ba9)
         );
     }
 
