@@ -56,7 +56,7 @@ library StdStyle {
         return red(vm.toString(self));
     }
 
-    function green(string memory self) internal view returns (string memory) {
+    function green(string memory self) internal pure returns (string memory) {
         return styleConcat(GREEN, self);
     }
 
@@ -90,8 +90,7 @@ library StdStyle {
         return green(vm.toString(self));
     }
 
-    function yellow(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function yellow(string memory self) internal pure returns (string memory) {
         return styleConcat(YELLOW, self);
     }
 
@@ -125,8 +124,7 @@ library StdStyle {
         return yellow(vm.toString(self));
     }
 
-    function blue(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function blue(string memory self) internal pure returns (string memory) {
         return styleConcat(BLUE, self);
     }
 
@@ -160,8 +158,7 @@ library StdStyle {
         return blue(vm.toString(self));
     }
 
-    function magenta(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function magenta(string memory self) internal pure returns (string memory) {
         return styleConcat(MAGENTA, self);
     }
 
@@ -195,8 +192,7 @@ library StdStyle {
         return magenta(vm.toString(self));
     }
 
-    function cyan(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function cyan(string memory self) internal pure returns (string memory) {
         return styleConcat(CYAN, self);
     }
 
@@ -230,8 +226,7 @@ library StdStyle {
         return cyan(vm.toString(self));
     }
 
-    function bold(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function bold(string memory self) internal pure returns (string memory) {
         return styleConcat(BOLD, self);
     }
 
@@ -265,7 +260,7 @@ library StdStyle {
         return bold(vm.toString(self));
     }
 
-    function dim(string memory self) internal view returns (string memory) {
+    function dim(string memory self) internal pure returns (string memory) {
         return styleConcat(DIM, self);
     }
 
@@ -299,8 +294,7 @@ library StdStyle {
         return dim(vm.toString(self));
     }
 
-    function italic(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function italic(string memory self) internal pure returns (string memory) {
         return styleConcat(ITALIC, self);
     }
 
@@ -334,8 +328,7 @@ library StdStyle {
         return italic(vm.toString(self));
     }
 
-    function underline(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function underline(string memory self) internal pure returns (string memory) {
         return styleConcat(UNDERLINE, self);
     }
 
@@ -369,8 +362,7 @@ library StdStyle {
         return underline(vm.toString(self));
     }
 
-    function inverse(string memory self) internal view returns (string memory) {
-        VmSafe vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
+    function inverse(string memory self) internal pure returns (string memory) {
         return styleConcat(INVERSE, self);
     }
 
