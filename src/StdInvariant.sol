@@ -66,8 +66,8 @@ abstract contract StdInvariant {
         _targetedInterfaces.push(newTargetedInterface_);
     }
 
-    // Functions for forge:
-    // These are called by forge to run invariant tests and don't need to be called in tests.
+    // Functions for spark:
+    // These are called by spark to run invariant tests and don't need to be called in tests.
 
     function excludeArtifacts() public view returns (string[] memory excludedArtifacts_) {
         excludedArtifacts_ = _excludedArtifacts;

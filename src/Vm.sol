@@ -172,7 +172,7 @@ interface VmSafe {
     function getRecordedLogs() external returns (Log[] memory logs);
 
     // -------- Gas Metering --------
-    // It's recommend to use the `noGasMetering` modifier included with forge-std, instead of
+    // It's recommend to use the `noGasMetering` modifier included with spark-std, instead of
     // using these functions directly.
 
     // Pauses gas metering (i.e. gas usage is not counted). Noop if already paused.
@@ -431,7 +431,7 @@ interface VmSafe {
         pure
         returns (string memory privateKey);
 
-    // Adds a private key to the local forge wallet and returns the address
+    // Adds a private key to the local spark wallet and returns the address
     function rememberKey(string memory privateKey) external returns (address keyAddr);
 
     // ======== Utilities ========
@@ -467,7 +467,7 @@ interface VmSafe {
         pure
         returns (address);
 
-    // Compute the address of a contract created with CREATE2 using foundry's default CREATE2
+    // Compute the address of a contract created with CREATE2 using foxar's default CREATE2
     // deployer:
     // 0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640 for mainnet,
     // 0xab800ee5e10bfbd37bc647e01d94489b4e244817b07f for devin,
@@ -479,7 +479,7 @@ interface VmSafe {
 
     // -------- Reading --------
 
-    // NOTE: Please read https://book.getfoundry.sh/cheatcodes/parse-json to understand the
+    // NOTE: Please read https://book.getfoxar.sh/cheatcodes/parse-json to understand the
     // limitations and caveats of the JSON parsing cheats.
 
     // Checks if a key exists in a JSON object.
@@ -520,7 +520,7 @@ interface VmSafe {
 
     // -------- Writing --------
 
-    // NOTE: Please read https://book.getfoundry.sh/cheatcodes/serialize-json to understand how
+    // NOTE: Please read https://book.getfoxar.sh/cheatcodes/serialize-json to understand how
     // to use the serialization cheats.
 
     // Serialize a key and value to a JSON object stored in-memory that can be later written to a file
@@ -570,7 +570,7 @@ interface VmSafe {
         external
         returns (string memory json);
 
-    // NOTE: Please read https://book.getfoundry.sh/cheatcodes/write-json to understand how
+    // NOTE: Please read https://book.getfoxar.sh/cheatcodes/write-json to understand how
     // to use the JSON writing cheats.
 
     // Write a serialized JSON object to a file. If the file exists, it will be overwritten.

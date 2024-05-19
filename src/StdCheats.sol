@@ -198,7 +198,7 @@ abstract contract StdCheatsSafe {
         NonPayable,
         ZeroAddress,
         Precompile,
-        ForgeAddress
+        SparkAddress
     }
 
     // Checks that `addr` is not blacklisted by token contracts that have a blacklist.
@@ -239,8 +239,8 @@ abstract contract StdCheatsSafe {
             assumeNotZeroAddress(addr);
         } else if (addressType == AddressType.Precompile) {
             assumeNotPrecompile(addr);
-        } else if (addressType == AddressType.ForgeAddress) {
-            assumeNotForgeAddress(addr);
+        } else if (addressType == AddressType.SparkAddress) {
+            assumeNotSparkAddress(addr);
         }
     }
 
@@ -322,7 +322,7 @@ abstract contract StdCheatsSafe {
         vm.assume(addr < address(0x1) || addr > address(0x9));
     }
 
-    function assumeNotForgeAddress(address addr) internal view virtual {
+    function assumeNotSparkAddress(address addr) internal view virtual {
         // vm, console, and Create2Deployer addresses
         vm.assume(
                 addr != address(vm) 
@@ -600,7 +600,7 @@ abstract contract StdCheatsSafe {
     }
 
     // We use this complex approach of `_viewChainId` and `_pureChainId` to ensure there are no
-    // compiler warnings when accessing chain ID in any solidity version supported by forge-std. We
+    // compiler warnings when accessing chain ID in any solidity version supported by spark-std. We
     // can't simply access the chain ID in a normal view or pure function because the solc View Pure
     // Checker changed `chainid` from pure to view in 1.1.0.
     function _viewChainId() private view returns (uint256 chainId) {

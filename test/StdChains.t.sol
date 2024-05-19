@@ -23,11 +23,11 @@ contract StdChainsMock is Test {
 
 contract StdChainsTest is Test {
     function test_ChainRpcInitialization() public {
-        // RPCs specified in `foundry.toml` should be updated.
+        // RPCs specified in `foxar.toml` should be updated.
         assertEq(getChain("mainnet").rpcUrl, "https://xcbapi-arch-mainnet.coreblockchain.net");
         assertEq(getChain("devin").rpcUrl, "https://xcbapi-arch-devin.coreblockchain.net/");
 
-        // Cannot override RPCs defined in `foundry.toml`
+        // Cannot override RPCs defined in `foxar.toml`
         vm.setEnv("MAINNET_RPC_URL", "myoverride2");
         assertEq(getChain("mainnet").rpcUrl, "https://xcbapi-arch-mainnet.coreblockchain.net");
     }

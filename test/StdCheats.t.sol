@@ -434,8 +434,8 @@ contract StdCheatsTest is Test {
         );
     }
 
-    function testFuzz_AssumeNotForgeAddress(address addr) external {
-        assumeNotForgeAddress(addr);
+    function testFuzz_AssumeNotSparkAddress(address addr) external {
+        assumeNotSparkAddress(addr);
         assertTrue(
                 addr != address(vm) 
                 && addr != Checksum.toIcan(uint160(bytes20(hex"000000000000000000636f6e736f6c652e6c6f67")))
