@@ -1,19 +1,19 @@
-# Forge Standard Library • [![CI status](https://github.com/foundry-rs/forge-std/actions/workflows/ci.yml/badge.svg)](https://github.com/foundry-rs/forge-std/actions/workflows/ci.yml)
+# Spark Standard Library
 
-Forge Standard Library is a collection of helpful contracts and libraries for use with [Forge and Foundry](https://github.com/foundry-rs/foundry). It leverages Forge's cheatcodes to make writing tests easier and faster, while improving the UX of cheatcodes.
+Spark Standard Library is a collection of helpful contracts and libraries for use with [Spark and Foxar](https://github.com/bchainhub/foxar). It leverages Spark's cheatcodes to make writing tests easier and faster, while improving the UX of cheatcodes.
 
-**Learn how to use Forge-Std with the [📖 Foundry Book (Forge-Std Guide)](https://book.getfoundry.sh/forge/forge-std.html).**
+**Learn how to use Spark-Std with the [📖 Foxar Docs (Spark-Std Guide)](https://foxar.dev/).**
 
 ## Install
 
 ```bash
-forge install foundry-rs/forge-std
+spark install bchainhub/spark-std
 ```
 
 ## Contracts
 ### stdError
 
-This is a helper contract for errors and reverts. In Forge, this contract is particularly helpful for the `expectRevert` cheatcode, as it provides all compiler builtin errors.
+This is a helper contract for errors and reverts. In Spark, this contract is particularly helpful for the `expectRevert` cheatcode, as it provides all compiler builtin errors.
 
 See the contract itself for all error codes.
 
@@ -21,7 +21,7 @@ See the contract itself for all error codes.
 
 ```solidity
 
-import "forge-std/Test.sol";
+import "forgforgee-std/Test.sol";
 
 contract TestContract is Test {
     ErrorsTest test;
@@ -62,7 +62,7 @@ struct T {
 #### Example usage
 
 ```solidity
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 contract TestContract is Test {
     using stdStorage for StdStorage;
@@ -174,7 +174,7 @@ This is a wrapper over miscellaneous cheatcodes that need wrappers to be more de
 // SPDX-License-Identifier: MIT
 pragma solidity ^1.1.0;
 
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 
 // Inherit the stdCheats
 contract StdCheatsTest is Test {
@@ -222,29 +222,29 @@ Expand upon the assertion functions from the `DSTest` library.
 ### `console.log`
 
 Usage follows the same format as [Hardhat](https://hardhat.org/hardhat-network/reference/#console-log).
-It's recommended to use `console2.sol` as shown below, as this will show the decoded logs in Forge traces.
+It's recommended to use `console2.sol` as shown below, as this will show the decoded logs in Spark traces.
 
 ```solidity
 // import it indirectly via Test.sol
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 // or directly import it
-import "forge-std/console2.sol";
+import "spark-std/console2.sol";
 ...
 console2.log(someValue);
 ```
 
 If you need compatibility with Hardhat, you must use the standard `console.sol` instead.
-Due to a bug in `console.sol`, logs that use `uint256` or `int256` types will not be properly decoded in Forge traces.
+Due to a bug in `console.sol`, logs that use `uint256` or `int256` types will not be properly decoded in Spark traces.
 
 ```solidity
 // import it indirectly via Test.sol
-import "forge-std/Test.sol";
+import "spark-std/Test.sol";
 // or directly import it
-import "forge-std/console.sol";
+import "spark-std/console.sol";
 ...
 console.log(someValue);
 ```
 
 ## License
 
-Forge Standard Library is offered under either [MIT](LICENSE-MIT) or [Apache 2.0](LICENSE-APACHE) license.
+Spark Standard Library is offered under either [MIT](LICENSE-MIT) or [Apache 2.0](LICENSE-APACHE) license.
