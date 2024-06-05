@@ -2,7 +2,7 @@
 pragma solidity >=1.1.0;
 
 // 💬 ABOUT
-// Forge Std's default Script.
+// Spark Std's default Script.
 
 // 🧩 MODULES
 import {console} from "./console.sol";

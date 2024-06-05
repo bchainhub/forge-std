@@ -8,7 +8,7 @@ devin = "https://xcbapi-arch-devin.coreblockchain.net/" # Adds a trailing slash.
 needs_undefined_env_var = "${UNDEFINED_RPC_URL_PLACEHOLDER}"
 
 [fmt]
-# These are all the `forge fmt` defaults.
+# These are all the `spark fmt` defaults.
 line_length = 120
 tab_width = 4
 bracket_spacing = false

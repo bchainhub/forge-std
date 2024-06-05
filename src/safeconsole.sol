@@ -6,7 +6,7 @@ import {Checksum} from "./checksum.sol";
 /// @author philogy <https://github.com/philogy>
 /// @dev Code generated automatically by script.
 library safeconsole {
-    // Credit to [0age](https://twitter.com/z0age/status/1654922202930888704) and [0xdapper](https://github.com/foundry-rs/forge-std/pull/374)
+    // Credit to [0age](https://twitter.com/z0age/status/1654922202930888704) and [0xdapper](https://github.com/bchainhub/spark-std/pull/374)
     // for the view-to-pure log trick.
     function _sendLogPayload(uint256 offset, uint256 size) private pure {
         function(uint256, uint256) internal view fnIn = _sendLogPayloadView;

@@ -8,7 +8,7 @@ import {Checksum} from "./checksum.sol";
  * StdChains provides information about EVM compatible chains that can be used in scripts/tests.
  * For each chain, the chain's name, chain ID, and a default RPC URL are provided. Chains are
  * identified by their alias, which is the same as the alias in the `[rpc_endpoints]` section of
- * the `foundry.toml` file. For best UX, ensure the alias in the `foundry.toml` file match the
+ * the `foxar.toml` file. For best UX, ensure the alias in the `foxar.toml` file match the
  * alias used in this contract, which can be found as the first argument to the
  * `setChainWithDefaultRpcUrl` call in the `initializeStdChains` function.
  *
@@ -26,11 +26,11 @@ import {Checksum} from "./checksum.sol";
  * The `getChain` methods use `getChainWithUpdatedRpcUrl` to return a chain. For example, let's say
  * we want to retrieve the RPC URL for `mainnet`:
  *   - If you have specified data with `setChain`, it will return that.
- *   - If you have configured a mainnet RPC URL in `foundry.toml`, it will return the URL, provided it
+ *   - If you have configured a mainnet RPC URL in `foxar.toml`, it will return the URL, provided it
  *     is valid (e.g. a URL is specified, or an environment variable is given and exists).
  *   - If neither of the above conditions is met, the default data is returned.
  *
- * Summarizing the above, the prioritization hierarchy is `setChain` -> `foundry.toml` -> environment variable -> defaults.
+ * Summarizing the above, the prioritization hierarchy is `setChain` -> `foxar.toml` -> environment variable -> defaults.
  */
 abstract contract StdChains {
     VmSafe private immutable vm = VmSafe(Checksum.toIcan(uint160(bytes20(hex"fc06a12b7a6f30e2a3c16a3b5d502cd71c20f2f8"))));
@@ -48,7 +48,7 @@ abstract contract StdChains {
         string name;
         // The chain's Chain ID.
         uint256 chainId;
-        // The chain's alias. (i.e. what gets specified in `foundry.toml`).
+        // The chain's alias. (i.e. what gets specified in `foxar.toml`).
         string chainAlias;
         // A default RPC endpoint for this chain.
         // NOTE: This default RPC URL is included for convenience to facilitate quick tests and
@@ -57,7 +57,7 @@ abstract contract StdChains {
         string rpcUrl;
     }
 
-    // Maps from the chain's alias (matching the alias in the `foundry.toml` file) to chain data.
+    // Maps from the chain's alias (matching the alias in the `foxar.toml` file) to chain data.
     mapping(string => Chain) private chains;
     // Maps from the chain's alias to it's default RPC URL.
     mapping(string => string) private defaultRpcUrls;
@@ -148,7 +148,7 @@ abstract contract StdChains {
     }
 
     // lookup rpcUrl, in descending order of priority:
-    // current -> config (foundry.toml) -> environment variable -> default
+    // current -> config (foxar.toml) -> environment variable -> default
     function getChainWithUpdatedRpcUrl(string memory chainAlias, Chain memory chain) private returns (Chain memory) {
         if (bytes(chain.rpcUrl).length == 0) {
             try vm.rpcUrl(chainAlias) returns (string memory configRpcUrl) {
@@ -161,7 +161,7 @@ abstract contract StdChains {
                     chain.rpcUrl = vm.envString(envName);
                 }
                 // Distinguish 'not found' from 'cannot read'
-                // The upstream error thrown by forge for failing cheats changed so we check both the old and new versions
+                // The upstream error thrown by spark for failing cheats changed so we check both the old and new versions
                 bytes memory oldNotFoundError =
                     abi.encodeWithSignature("CheatCodeError", string(abi.encodePacked("invalid rpc url ", chainAlias)));
                 bytes memory newNotFoundError = abi.encodeWithSignature(
@@ -196,7 +196,7 @@ abstract contract StdChains {
         setChainWithDefaultRpcUrl("devin", ChainData("Devin", 3, "https://xcbapi.corecoin.cc/"));
     }
 
-    // set chain info, with priority to chainAlias' rpc url in foundry.toml
+    // set chain info, with priority to chainAlias' rpc url in foxar.toml
     function setChainWithDefaultRpcUrl(string memory chainAlias, ChainData memory chain) private {
         string memory rpcUrl = chain.rpcUrl;
         defaultRpcUrls[chainAlias] = rpcUrl;
