@@ -27,7 +27,7 @@ abstract contract CommonBase {
     StdStorage internal stdstore;
 
     // Used when deploying with create2, https://github.com/Arachnid/deterministic-deployment-proxy.
-    function CREATE2_FACTORY() internal returns (address) {
+    function CREATE2_FACTORY() internal view returns (address) {
         uint8 chainId = uint8(block.chainid);
         if (chainId == 1) { // mainnet - 'cb'
             return address(0xcb063edadf999cb7b8b3ebc71f5e97783176d289d640);
